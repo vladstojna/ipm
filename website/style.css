@@ -1,0 +1,17 @@
+body{
+	font-family: Times;
+}
+
+#header{
+	color:green;
+	font-size:30px;
+}
+
+#paragraph2{
+	color:red;
+	font-size:20px;
+}
+
+#um{
+	color:pink;
+}
