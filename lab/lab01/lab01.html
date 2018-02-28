@@ -6,8 +6,20 @@
 	</head>
 
 	<body>
-		<div id = "header">
-			Header do site
+			<script>
+				function changeImage() {
+					var image = document.getElementById('rgb');
+									image.src = "error.png";
+				}
+
+				function changeTextColor() {
+					document.getElementById("paragraph1").style.color = "blue";
+				}
+			</script>
+
+
+			<div id = "header">
+				Header do site
     	</div>
 
     	<div id = "paragraph1">
@@ -44,7 +56,9 @@
     			<td> HSV </td>
     		</tr>
     		<tr>
-    			<td> <img src = "rgb.jpg" width = "100px"> </td>
+			
+
+    			<td> <img id="rgb" src="rgb.jpg" onclick="changeImage(); changeTextColor()" width = "100px"> </td>
     			<td> <img src = "cmy.gif" width = "100px"> </td>
     			<td> <img src = "hsv.png" width = "100px"> </td>
 
