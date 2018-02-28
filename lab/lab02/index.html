@@ -1,0 +1,77 @@
+<html>
+
+<head>
+  <title>Onde estudar?</title>
+  <link rel="stylesheet" href="lab2.css">
+  <script src="rooms.js"></script>
+  <script src="lab2.js"></script>
+</head>
+
+<body onload="loadAllRoomData(getData());">
+  <div id="main">
+    <h1>Onde estudar?</h1>
+    <div id="selectRoom">
+      <label> Escolhe uma sala: </label>
+      <div id="map">
+        <img id="target" src="images/target.png" width="30" alt="Room Location" draggable="true"
+             ondragstart="drag(this, event)">
+        <img id="source" src="images/source.png" width="50" alt="User Location">
+        <img id="schoolImage" src="images/schoolmap50.jpg" alt="School Map" usemap="#schoolMap">
+        <map name="schoolMap">
+          <area target="" alt="S1" title="S1" coords="7,51,129,183" shape="rect"
+                onclick="selectRoom('S1')"
+                ondrop="drop(this, event, 'S1')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="S2" title="S2" coords="177,50,307,181" shape="rect"
+                onclick="selectRoom('S2')"
+                ondrop="drop(this, event, 'S2')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="S3" title="S3" coords="309,52,438,181" shape="rect"
+                onclick="selectRoom('S3')"
+                ondrop="drop(this, event, 'S3')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="A1" title="A1" coords="7,188,132,442" shape="rect"
+                onclick="selectRoom('A1')"
+                ondrop="drop(this, event, 'A1')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="A2" title="A2" coords="177,187,435,440" shape="rect"
+                onclick="selectRoom('A2')"
+                ondrop="drop(this, event, 'A2')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="Lab1" title="Lab1" coords="132,617,6,485" shape="rect"
+                onclick="selectRoom('Lab1')"
+                ondrop="drop(this, event, 'Lab1')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="Lab2" title="Lab2" coords="178,487,304,616" shape="rect"
+                onclick="selectRoom('Lab2')"
+                ondrop="drop(this, event, 'Lab2')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="Lab3" title="Lab3" coords="308,484,441,618" shape="rect"
+                onclick="selectRoom('Lab3')"
+                ondrop="drop(this, event, 'Lab3')"
+                ondragenter="return false"
+                ondragover="return false">
+          <area target="" alt="Lab4" title="Lab4" coords="442,486,563,616" shape="rect"
+                onclick="selectRoom('Lab4')"
+                ondrop="drop(this, event, 'Lab4')"
+                ondragenter="return false"
+                ondragover="return false">
+        </map>
+      </div>
+      <div id="footer">
+        <!-- TODO -->
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

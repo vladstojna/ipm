@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#main {
+  position: absolute;
+  margin: 30;
+}
+
+#schedule { 
+  position: absolute;
+}
+
+#map {
+  position: absolute;
+}
+
+#schoolImage{
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  visibility: visible;
+}
+
+#target{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  visibility: hidden;
+}
+
+#source{
+  position: absolute;
+  top: 225px;
+  left: 475px;  
+  z-index: 10;
+}
+
+#footer{
+  position: absolute;  
+  top: 700px;
+  margin-top: 50px;
+}
+
+#hours {
+  position: absolute;
+  left: 0;
+  width: 100px;
+  padding: 10px;
+  background-color: #dddddd;
+  font-size: 12pt;
+}
+
+#classes {
+  position: absolute;
+  left : 125px;
+  width: 200px;
+  padding: 10px;
+  background-color: #eeeeee;
+  font-size: 12pt;
+}
+
+.timeslot {
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0);
+  border-bottom: 1px solid #eeeeee;
+  text-align: right;
+ 
+}
+
+.classslot {
+  padding: 5px;
+  background-color: #50d0a7;
+  border-bottom: 1px solid #70f0c7;
+}
+
+.emptyslot {
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0);
+  border-bottom: 1px solid #f6f6f6;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.alert { 
+  padding: 20px;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.6s;
+  margin-bottom: 15px;
+  font-size: 20px;
+  display: none;
+}
+
+.alert.success {
+  background-color: #0a740a;
+}
+
+.closebtn {
+  margin-left: 70px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
