@@ -1,0 +1,257 @@
+
+/*Contains all screns' divs*/
+#container{
+	width: 170pt;
+	height: 210pt;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+
+#limitScreen{
+	width: 1.5in;
+	height: 1.5in;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	background-color: none;
+	border-radius: 50%;
+	
+	position: absolute; 
+	overflow: hidden;
+	
+}
+
+#switch {
+	position: absolute;
+	width: 11pt;
+	height: 13pt;
+	display: disabled;
+	left: 20pt;
+	top: 71pt;
+	z-index: 100;
+	color: purple;
+}
+
+#lockButton{
+	position: absolute;
+	width: 11pt;
+	height: 13pt;
+	display: disabled;
+	left: 136pt;
+	top: 65pt;
+	z-index: 100;
+}
+
+#backButton{
+	position: absolute;
+	width: 11pt;
+	height: 13pt;
+	display: disabled;
+	left: 136pt;
+	top: 130pt;
+	z-index: 100;
+}
+
+#watchBody{
+	position: absolute;
+	width: 356pt;
+	height: 210;
+	top: 50%;
+  	left: 50%;
+  	transform: translateX(-50%) translateY(-50%);
+	z-index: 10;
+	pointer-events: none;
+}
+
+.screen{
+	width: 1.5in;
+	height: 1.5in;
+	border-radius: 50%;	
+	background-color: #565454; 
+	position: absolute;
+}
+
+
+#startScreen{
+	background-image: url("blue.jpg");
+	background-size: 175pt 175pt; 
+	z-index: 0;
+}
+
+#mainMenuScreen{
+	z-index: 0;
+}
+
+#emergency{
+	z-index: 0;
+	width: 1.5in;
+	height: 1.5in;
+	position: absolute;
+}
+
+#emergencyScreen{
+	opacity: 0.95;
+	position: absolute;
+}
+
+#emergencyText{
+	left: 50%;
+	top: 20%;
+	position: absolute;
+	transform: translateX(-50%) translateY(-50%);
+	color: white;
+}
+
+#helpComing{
+	z-index: 0;
+	width: 1.5in;
+	height: 1.5in;
+	position: absolute;
+}
+
+
+#helpComingScreen{
+	opacity: 0.95;
+	top: 0pt;
+	left: 0pt;
+	position: absolute;
+}
+
+#helpComingText{
+	left: 50%;
+	top: 20%;
+	position: absolute;
+	transform: translateX(-50%) translateY(-50%);
+	color: white;
+}
+
+#helpComingTimer{
+	left: 50%;
+	top: 70%;
+	position: absolute;
+	transform: translateX(-50%) translateY(-50%);
+	color: white;
+}
+
+#lockScreen{
+	background-color: black;
+	z-index: 2;
+}
+
+#clock{
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	position: absolute;
+	color: white;
+	text-align: center;
+}
+
+#acceptEmergency{
+	position: absolute;
+	width: 50pt;
+	height: auto;
+	right: auto;
+	left: auto;
+	top: 60%;
+	left: 27%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+#declineEmergency{
+	position: absolute;
+	width: 50pt;
+	height: auto;
+	right: auto;
+	left: auto;
+	top: 60%;
+	left: 73%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+#helpRejected{
+	z-index: 0;
+	width: 1.5in;
+	height: 1.5in;
+	top: 0pt;
+	left: 0pt;
+	position: absolute;
+}
+
+#helpRejectedScreen{
+	opacity: 0.8;
+	top: 0pt;
+	left: 0pt;
+	position: absolute;
+}
+
+#helpRejectedInstructions{
+	position: absolute;
+	width: 80pt;
+	height: auto;
+	right: auto;
+	left: auto;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+#mainMenuScreen{
+	z-index: 1;
+}
+
+#findPerson{
+	position: absolute;
+	border: 1pt solid darkblue;
+	background-color: #0dadf2;
+	border-radius: 50%;
+	width: 48pt;
+	height: 48pt;
+	top: 50%;
+	left: 25%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+#findPersonButton{
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	width: 29pt;
+	height: auto;
+	position: absolute;
+}	
+
+#findPlace{
+	position: absolute;
+	border: 1pt solid darkblue;
+	background-color: #0dadf2;
+	border-radius: 50%;
+	width: 48pt;
+	height: 48pt;
+	top: 50%;
+	left: 75%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+#findPlaceButton{
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	width: 40pt;
+	height: auto;
+	position: absolute;
+}	
+
+#time{
+	font-family: Lucida, sans-serif;
+	font-size: 35pt;
+	font-weight: bold;
+}
+
+#date{
+	font-family: Lucida, sans-serif;
+	font-size: 12pt;
+}

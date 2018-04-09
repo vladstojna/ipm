@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://hammerjs.github.io/dist/hammer.js">
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+		</script>
+		<meta charset="utf-8">
+		<link rel="styleSheet" type="text/css" href="iravestyle.css">
+	</head>
+	<body>
+		<div id="container">
+			
+			
+			<div id="limitScreen"> 
+				
+				
+				<div id="startScreen" class="screen">
+					<div id="clock"> </div>
+				</div>
+				<div id="mainMenuScreen" class="screen">
+					<div id="findPerson">
+						<img id="findPersonButton" src="findPeople.png">
+					</div>
+					<div id="findPlace">	
+						<img id="findPlaceButton" src="findPlaces.png">
+					</div>	
+				</div>	
+				
+				<div id="emergency">
+				<div id="emergencyScreen" class="screen"> </div>
+					<div id="emergencyText">
+						<span id="emergencyTitle"> Emergency? </span> 
+					</div>
+					<img id="acceptEmergency" src="check-ok.png" onclick="acceptEmergency()">
+					<img id="declineEmergency" src="check-failed.png" onclick="declineEmergency()">
+				</div>
+			
+
+				<div id="helpComing">
+					<div id="helpComingScreen" class="screen"> </div>	
+					<p id="helpComingText"> HELP ON THE WAY </p>
+					<div id="helpComingTimer"> </div>
+				</div>
+
+				<div id="lockScreen" class="screen" onclick="unlock()">
+				</div>	
+
+				<div id="helpRejected">
+					<div id="helpRejectedScreen" class="screen"> </div>
+					<img id="helpRejectedInstructions" src="instruction.png">
+				</div>
+			</div>
+			
+			
+			<img id="watchBody" src="watchBodyOff.png">
+			<div id="switch" onclick="emergencyModeToggle()"> </div>
+			<div id="lockButton" onclick="lock()"> </div>
+			<div id="backButton" onclick="back()"> </div>
+		
+		</div>	
+	</body>
+	<script src="irave.js">
+	</script>	
+</html>
