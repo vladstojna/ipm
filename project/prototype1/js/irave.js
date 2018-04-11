@@ -124,16 +124,29 @@ function declineEmergency(){
 | reach the pacient.
 ---------------------------------------------------------------------*/
 function updateEmergencyTime(minutes, seconds){
+	if(minutes == 0 && seconds == 0){
+		clearTimeout(emergencyTimer);
+		document.getElementById("helpComingTimer").innerHTML=
+			"<span id='timeEmergency'> 00:00 </span>";
+		helpRejected.style.zIndex = 3;
+		helpComing.style.zIndex = 0;
+		currentScreen = helpRejected;
+		emergencyCalled = false;
+		return; 
+	}
+
+
 	if(seconds == 0){
 		seconds = 59;
 		minutes--;
 	}
+
 	seconds--;
 	minutes = checkTime(minutes);
 	seconds = checkTime(seconds);
 
 	document.getElementById("helpComingTimer").innerHTML=
-		"<span class='time'>" + minutes + ":" + seconds + "</span>";
+		"<span id='timeEmergency'>" + minutes + ":" + seconds + "</span>";
 
 	emergencyTimer = setTimeout(updateEmergencyTime, 1000, minutes, seconds);
 }
