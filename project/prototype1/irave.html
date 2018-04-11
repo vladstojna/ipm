@@ -6,7 +6,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
 		</script>
 		<meta charset="utf-8">
-		<link rel="styleSheet" type="text/css" href="iravestyle.css">
+		<link rel="styleSheet" type="text/css" href="css/iravestyle.css">
 	</head>
 	<body>
 		<div id="container">
@@ -20,10 +20,10 @@
 				</div>
 				<div id="mainMenuScreen" class="screen">
 					<div id="findPerson">
-						<img id="findPersonButton" src="findPeople.png">
+						<img id="findPersonButton" src="images/findPeople.png">
 					</div>
 					<div id="findPlace">	
-						<img id="findPlaceButton" src="findPlaces.png">
+						<img id="findPlaceButton" src="images/findPlaces.png">
 					</div>	
 				</div>	
 				
@@ -32,8 +32,8 @@
 					<div id="emergencyText">
 						<span id="emergencyTitle"> Emergency? </span> 
 					</div>
-					<img id="acceptEmergency" src="check-ok.png" onclick="acceptEmergency()">
-					<img id="declineEmergency" src="check-failed.png" onclick="declineEmergency()">
+					<img id="acceptEmergency" src="images/check-ok.png" onclick="acceptEmergency()">
+					<img id="declineEmergency" src="images/check-failed.png" onclick="declineEmergency()">
 				</div>
 			
 
@@ -48,18 +48,18 @@
 
 				<div id="helpRejected">
 					<div id="helpRejectedScreen" class="screen"> </div>
-					<img id="helpRejectedInstructions" src="instruction.png">
+					<img id="helpRejectedInstructions" src="images/instruction.png">
 				</div>
 			</div>
 			
 			
-			<img id="watchBody" src="watchBodyOff.png">
+			<img id="watchBody" src="images/watchBodyOff.png">
 			<div id="switch" onclick="emergencyModeToggle()"> </div>
 			<div id="lockButton" onclick="lock()"> </div>
 			<div id="backButton" onclick="back()"> </div>
 		
 		</div>	
 	</body>
-	<script src="irave.js">
+	<script src="js/irave.js">
 	</script>	
 </html>

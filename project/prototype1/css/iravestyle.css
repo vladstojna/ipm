@@ -76,7 +76,7 @@
 
 
 #startScreen{
-	background-image: url("blue.jpg");
+	background-image: url("../images/blue.jpg");
 	background-size: 175pt 175pt; 
 	z-index: 0;
 }
