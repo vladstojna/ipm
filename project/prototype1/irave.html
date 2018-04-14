@@ -9,16 +9,14 @@
 		<meta charset="utf-8">
 		<link rel="styleSheet" type="text/css" href="css/iravestyle.css">
 	</head>
+
 	<body>
 		<div id="container">
-			
-			
 			<div id="limitScreen"> 
-				
-				
 				<div id="startScreen" class="screen">
 					<div id="clock"> </div>
 				</div>
+
 				<div id="mainMenuScreen" class="screen">
 					<div id="findPerson">
 						<img id="findPersonButton" src="images/findPeople.png">
@@ -51,16 +49,22 @@
 					<div id="helpRejectedScreen" class="screen"> </div>
 					<img id="helpRejectedInstructions" src="images/instruction.png">
 				</div>
+
+				<!-- Added 14/04/2018 -->
+				<div id="ambulance">
+					<img id="ambulanceImg" src="">
+					<div id="ambulanceTimer"> </div>
+				</div>	
+				<!-- -->
 			</div>
-			
-			
+
 			<img id="watchBody" src="images/watchBodyOff.png">
 			<div id="switch" onclick="emergencyModeToggle()"> </div>
 			<div id="lockButton" onclick="lock()"> </div>
 			<div id="backButton" onclick="back()"> </div>
-		
 		</div>	
 	</body>
+
 	<script src="js/irave.js">
 	</script>	
 </html>

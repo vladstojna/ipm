@@ -1,3 +1,7 @@
+/*All the text has this font*/
+*{
+	font-family: Lucida, sans-serif !important;
+}
 
 /*Contains all screns' divs*/
 #container{
@@ -18,7 +22,6 @@
 	transform: translateX(-50%) translateY(-50%);
 	background-color: none;
 	border-radius: 50%;
-	
 	position: absolute; 
 	overflow: hidden;
 	
@@ -246,12 +249,30 @@
 }	
 
 #time{
-	font-family: Lucida, sans-serif;
 	font-size: 35pt;
 	font-weight: bold;
 }
 
 #date{
-	font-family: Lucida, sans-serif;
 	font-size: 12pt;
+}
+
+#ambulance{
+	border-radius: 30%;
+	width: 50pt;
+	height: 25pt;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 92pt;
+	background-color: red;
+	position: absolute;
+	z-index: 0;
+}
+
+#ambulanceTimer{
+	left: 50%;
+	top: 30%;
+	position: absolute;
+	transform: translateX(-50%) translateY(-50%);
+	color: white;
 }

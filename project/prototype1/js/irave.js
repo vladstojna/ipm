@@ -21,6 +21,7 @@ var mainMenuScreen = document.getElementById("mainMenuScreen");
 var emergency = document.getElementById("emergency");
 var helpComing = document.getElementById("helpComing");
 var helpRejected = document.getElementById("helpRejected");
+var ambulance = document.getElementById("ambulance");
 /*-------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
@@ -55,6 +56,8 @@ function checkTime(n){
 | Function: unlock
 ---------------------------------------------------------------------*/
 function unlock(){
+	if(emergencyCalled)
+		ambulance.style.zIndex = 9;
 	exchangeScreens(lockScreen, startScreen, 0, 2);
 	updateHours();
 }
@@ -70,13 +73,16 @@ function emergencyModeToggle(){
 		screenOnBackground = currentScreen;
 		if(!emergencyCalled) /*Help hasn't been called*/
 			emergencyExchangeScreen(emergency, 3, true);
-		else /*Help has been called*/
+		else{ /*Help has been called*/
 			emergencyExchangeScreen(helpComing, 3, true);
+			ambulance.style.zIndex = 0;
+		}	
 	}
 	else{ /*Deactivate emergency mode*/
 		if(currentScreen == helpComing){ /*Help hasn been called*/
 			emergencyExchangeScreen(helpComing, 0, false);
-			//FIXME invoke ambulance
+			if(screenOnBackground != lockScreen)
+				ambulance.style.zIndex = 9;
 		}
 		else /*Help hasn't been called*/
 			if(currentScreen == helpRejected)
@@ -105,7 +111,7 @@ function acceptEmergency(){
 	emergencyCalled = true;
 
 	var minutes = Math.round(Math.random()*10) + 1;
-	updateEmergencyTime(minutes, 0);
+	updateEmergencyTime( minutes, 0);
 }
 
 /*--------------------------------------------------------------------
@@ -128,9 +134,12 @@ function updateEmergencyTime(minutes, seconds){
 		clearTimeout(emergencyTimer);
 		document.getElementById("helpComingTimer").innerHTML=
 			"<span id='timeEmergency'> 00:00 </span>";
-		helpRejected.style.zIndex = 3;
-		helpComing.style.zIndex = 0;
-		currentScreen = helpRejected;
+		ambulance.style.zIndex = 0;
+		if(emergencyModeOn){		
+			helpRejected.style.zIndex = 3;
+			helpComing.style.zIndex = 0;
+			currentScreen = helpRejected;
+		}	
 		emergencyCalled = false;
 		return; 
 	}
@@ -147,6 +156,9 @@ function updateEmergencyTime(minutes, seconds){
 
 	document.getElementById("helpComingTimer").innerHTML=
 		"<span id='timeEmergency'>" + minutes + ":" + seconds + "</span>";
+
+	document.getElementById("ambulanceTimer").innerHTML=
+		"<span id='timeAmbulance'>" + minutes + ":" + seconds + "</span>";	
 
 	emergencyTimer = setTimeout(updateEmergencyTime, 1000, minutes, seconds);
 }
@@ -165,8 +177,12 @@ function exchangeScreens(oldScreen, newScreen, oldIndex, newIndex){
 
 function lock(){
 	if(emergencyModeOn){return;}
-	if(currentScreen != lockScreen)
+
+	if(currentScreen != lockScreen){
+		if(emergencyCalled) 
+			ambulance.style.zIndex = 0;
 		exchangeScreens(currentScreen, lockScreen, 0, 2);
+	}
 	else{
 		unlock();
 	}
