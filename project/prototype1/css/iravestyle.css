@@ -79,13 +79,17 @@
 
 
 #startScreen{
-	background-image: url("../images/blue.jpg");
-	background-size: 175pt 175pt; 
+	background-image: url("../images/background.jpg");
+	background-position: center;
+	background-size: 130pt 130pt; 
 	z-index: 0;
 }
 
 #mainMenuScreen{
 	z-index: 0;
+	background-image: url("../images/main-menu.png");
+	background-position: center;
+	background-size: 130pt 130pt;
 }
 
 #emergency{
@@ -98,6 +102,9 @@
 #emergencyScreen{
 	opacity: 0.95;
 	position: absolute;
+	background-image: url("../images/background.png");
+	background-position: center;
+	background-size: 130pt 130pt;
 }
 
 #emergencyText{
@@ -121,6 +128,9 @@
 	top: 0pt;
 	left: 0pt;
 	position: absolute;
+	background-image: url("../images/background.png");
+	background-position: center;
+	background-size: 130pt 130pt;
 }
 
 #helpComingText{
@@ -189,6 +199,9 @@
 	top: 0pt;
 	left: 0pt;
 	position: absolute;
+	background-image: url("../images/background.png");
+	background-position: center;
+	background-size: 130pt 130pt;
 }
 
 #helpRejectedInstructions{
@@ -206,19 +219,18 @@
 	z-index: 1;
 }
 
-#findPerson{
+#findPersonButton{
 	position: absolute;
-	border: 1pt solid darkblue;
-	background-color: #0dadf2;
 	border-radius: 50%;
 	width: 48pt;
 	height: 48pt;
 	top: 50%;
 	left: 25%;
 	transform: translateX(-50%) translateY(-50%);
+	z-index: 2;
 }
 
-#findPersonButton{
+#findPersonIcon{
 	top: 50%;
 	left: 50%;
 	transform: translateX(-50%) translateY(-50%);
@@ -227,30 +239,30 @@
 	position: absolute;
 }	
 
-#findPlace{
+#findPlaceButton{
 	position: absolute;
-	border: 1pt solid darkblue;
-	background-color: #0dadf2;
 	border-radius: 50%;
 	width: 48pt;
 	height: 48pt;
 	top: 50%;
 	left: 75%;
 	transform: translateX(-50%) translateY(-50%);
+	z-index: 2;
 }
 
-#findPlaceButton{
+#findPlaceIcon{
 	top: 50%;
 	left: 50%;
 	transform: translateX(-50%) translateY(-50%);
-	width: 40pt;
+	width: 29pt;
 	height: auto;
 	position: absolute;
-}	
+}
 
 #time{
 	font-size: 35pt;
 	font-weight: bold;
+	white-space: nowrap;
 }
 
 #date{
@@ -258,7 +270,7 @@
 }
 
 #ambulance{
-	border-radius: 30%;
+	border-radius: 50%;
 	width: 50pt;
 	height: 25pt;
 	left: 50%;
@@ -275,4 +287,39 @@
 	position: absolute;
 	transform: translateX(-50%) translateY(-50%);
 	color: white;
+}
+
+#mainMenuImage{	
+	width: 1.7in;
+	height: 1.7in;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	border-radius: 50%;	 
+	position: absolute;
+	z-index: 1;
+}
+
+#vibratingScreen{
+	width: 1.6in;
+	height: 1.6in;
+	border-radius: 50%;	
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	background-color: none; 
+	position: absolute;
+}
+
+#mainMenuTime{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 6pt;
+	color: white;
+	z-index: 2;
+}
+
+#timeEmergency{
+	font-size: 25pt;
 }

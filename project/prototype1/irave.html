@@ -10,19 +10,22 @@
 		<link rel="styleSheet" type="text/css" href="css/iravestyle.css">
 	</head>
 
-	<body>
+	<body onload="init()">
 		<div id="container">
+			<div id="vibratingScreen"> </div>
 			<div id="limitScreen"> 
 				<div id="startScreen" class="screen">
 					<div id="clock"> </div>
 				</div>
 
 				<div id="mainMenuScreen" class="screen">
-					<div id="findPerson">
-						<img id="findPersonButton" src="images/findPeople.png">
+					<div id="mainMenuClock"> </div>
+					<img id="mainMenuImage" src="images/main-menu.png">
+					<div id="findPersonButton">
+						<img id="findPersonIcon" src="images/find-person-icon.png">
 					</div>
-					<div id="findPlace">	
-						<img id="findPlaceButton" src="images/findPlaces.png">
+					<div id="findPlaceButton">	
+						<img id="findPlaceIcon" src="images/find-place-icon.png">
 					</div>	
 				</div>	
 				

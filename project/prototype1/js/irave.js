@@ -7,6 +7,9 @@ var previousScreens = {"startScreen":"lockScreen", "mainMenu":"startScreen"};
 var timer;
 var emergencyTimer;
 
+var ticTimer;
+var secondsTic = 0; 
+
 var emergencyCalled = false;
 var emergencyModeOn = false;
 
@@ -22,6 +25,7 @@ var emergency = document.getElementById("emergency");
 var helpComing = document.getElementById("helpComing");
 var helpRejected = document.getElementById("helpRejected");
 var ambulance = document.getElementById("ambulance");
+var vibratingScreen = document.getElementById("vibratingScreen");
 /*-------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
@@ -36,11 +40,17 @@ function updateHours(){
 	var hour = checkTime(date.getHours());
 	var minutes = checkTime(date.getMinutes());
 
+
 	document.getElementById("clock").innerHTML=
 		"<span id='time'>" + hour + ":" + minutes + "</span> <br>" +
 		"<span id='date'>" + weekDay + ", " + day + " " + month + "</span>";
+
+	document.getElementById("mainMenuClock").innerHTML=
+		"<span id='mainMenuTime'>" + hour + ":" + minutes + "</span>";
+
+	colon = !colon;	
 	/*Run again in 60 seconds*/
-	timer = setTimeout(updateHours, 60000);
+	timer = setTimeout(updateHours, 30000);
 }
 
 /*--------------------------------------------------------------------
@@ -133,7 +143,7 @@ function updateEmergencyTime(minutes, seconds){
 	if(minutes == 0 && seconds == 0){
 		clearTimeout(emergencyTimer);
 		document.getElementById("helpComingTimer").innerHTML=
-			"<span id='timeEmergency'> 00:00 </span>";
+			"<span id='timeEmergency'> 00:00 </span>";	
 		ambulance.style.zIndex = 0;
 		if(emergencyModeOn){		
 			helpRejected.style.zIndex = 3;
@@ -311,4 +321,38 @@ function back(){
 		startScreen.style.zIndex = 2;
 		mainMenuScreen.style.zIndex = 1;
 	}
+}
+
+
+var shadow0 = "0pt 0pt 50pt 0pt white";
+var shadow1 = "0pt 0pt 50pt 0pt yellow";
+var shadow2 = "0pt 0pt 50pt 0pt orange";
+var shadow3 = "0pt 0pt 50pt 0pt red";
+
+var container = document.getElementById("container");
+
+function init(){
+	secondsTic += 1;
+	if(emergencyModeOn){
+		vibratingScreen.style.borderColor = "black";
+		if((secondsTic%4) == 0){
+			vibratingScreen.style.boxShadow = shadow0;
+		}
+		if((secondsTic%4) == 1){
+			vibratingScreen.style.boxShadow = shadow3;
+		}
+		if((secondsTic%4) == 2){
+			vibratingScreen.style.boxShadow = shadow0;
+		}
+		if((secondsTic%4) == 3){
+			vibratingScreen.style.boxShadow = shadow3;
+		}
+	}
+	else{
+		vibratingScreen.style.borderColor = "transparent";
+		vibratingScreen.style.boxShadow = shadow0;
+		secondsTic = 0;
+	}
+	/*Run again in 1 second*/
+	ticTimer = setTimeout(init, 500);
 }
