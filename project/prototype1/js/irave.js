@@ -324,11 +324,18 @@ function returnStartScreen(){
 }
 
 function back(){
-	if(currentScreen == mainMenuScreen){
-		currentScreen = startScreen;
-		startScreen.style.zIndex = 2;
-		mainMenuScreen.style.zIndex = 1;
-	}
+	switch(currentScreen){
+		case mainMenuScreen:
+			currentScreen = startScreen;
+			startScreen.style.zIndex = 2;
+			mainMenuScreen.style.zIndex = 1;
+			break;
+		case helpComing:
+			currentScreen = helpRejected;
+			helpRejected.style.zIndex = 3;
+			helpComing.style.zIndex = 0;
+			break;
+	} 
 }
 
 
