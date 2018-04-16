@@ -58,17 +58,6 @@
 	z-index: 100;
 }
 
-#watchBody{
-	position: absolute;
-	width: 356pt;
-	height: 210;
-	top: 50%;
-  	left: 50%;
-  	transform: translateX(-50%) translateY(-50%);
-	z-index: 10;
-	pointer-events: none;
-}
-
 .screen{
 	width: 1.5in;
 	height: 1.5in;
@@ -122,6 +111,14 @@
 	position: absolute;
 }
 
+#emergencyTitle{
+	font-weight: bold;
+	font-size: 14pt;
+	top: 2pt;
+	left: 50%;
+	transform: translateX(-50%);
+	position: absolute;
+}
 
 #helpComingScreen{
 	opacity: 0.95;
@@ -322,4 +319,31 @@
 
 #timeEmergency{
 	font-size: 25pt;
+}
+
+.watchBodies{
+	width: 129pt;
+	height: auto;
+	top: 0pt;
+	left: 0pt;
+	position: absolute;
+	top: 50%;
+  	left: 50%;
+  	transform: translateX(-50%) translateY(-50%);
+
+}
+
+#watchBody{
+	position: absolute;
+	width: 356pt;
+	height: 210;
+	top: 50%;
+  	left: 50%;
+  	transform: translateX(-50%) translateY(-50%);
+	z-index: 10;
+	pointer-events: none;
+}
+
+#watchBodyOn{
+	display: none;
 }
