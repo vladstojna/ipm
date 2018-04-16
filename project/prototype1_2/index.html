@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> irave/test </title>
+		<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+		<meta charset="utf-8">
+		<link rel="styleSheet" type="text/css" href="test.css">
+	</head>
+	<body onload="vibration(); initVisibility()">
+		<!-- Container with all elements -->
+		<div id="container">
+
+			<!-- Main watch body image -->
+			<img id="watchBody"  class="body" src="images/watch_body_transparent_toggleOff.png">
+
+			<!-- Mask wrapper -->
+			<div id=maskWrapper class="screen">
+				<!-- Button Masks and their respective maps -->
+				<img id="toggleMask" class="mask" src="images/button_masks/mask-toggle.png" usemap="#toggleButton">
+				<img id="unlockMask" class="mask" src="images/button_masks/mask-unlock.png" usemap="#unlockButton">
+				<img id="backMask"   class="mask" src="images/button_masks/mask-back.png"   usemap="#backButton">
+
+					<map name="toggleButton" id="toggleButton">
+						<area target="" alt="emergencyToggle" title="emergencyToggle"
+						shape="poly"
+						coords="0,53,15,28,28,36,14,60"
+						onclick="emergencyModeToggle()" >
+					</map>
+					<map name="unlockButton" id="unlockButton">		
+						<area target="" alt="unlockButton" title="unlockButton"
+						shape="poly"
+						coords="10,4,42,59,47,26,34,9"
+						onclick="lock()" >
+					</map>
+					<map name="backButton" id="backButton">		
+						<area target="" alt="backButton" title="backButton"
+						shape="poly"
+						coords="9,62,43,6,48,35,38,52"
+						onclick="back()" >
+					</map>
+			</div>
+
+			<!-- Wrapper that holds relevant data -->
+			<div id="wrapper" class="screen">
+
+				<!-- Emergency screen -->
+				<div id="emergencyScreen" class="screen">
+					<img class="screen" src="images/menu-background.png">
+					<img id="callHelp"    class="button" src="images/check-ok.png"     usemap="#emergencyCall">
+					<img id="cancelHelp"  class="button" src="images/check-failed.png" usemap="#emergencyCancel">
+
+					<span id="emergencyTitle" class="text"> Emergency? </span>
+
+						<map name="emergencyCall" id=emergencyCall>
+							<area target="" alt="emergencyAcceptButton" title="emergencyAcceptButton"
+							shape="circle"
+							coords="45,44,40"
+							onclick="acceptEmergency()" >
+						</map>
+						<map name="emergencyCancel" id=emergencyCancel>
+							<area target="" alt="emergencyDeclineButton" title="emergencyDeclineButton"
+							shape="circle"
+							coords="45,44,40"
+							onclick="declineEmergency()" >
+						</map>
+				</div>
+
+				<!-- Help declined screen, when emergency call is canceled -->
+				<div id="helpDeclinedScreen" class="screen">
+					<img class="screen" src="images/menu-background.png">
+					<img id="instruction"    class="icon"   src="images/icon-untoggle.png">
+				</div>
+
+				<!-- Help accepted screen, when emergency call is successful -->
+				<div id="helpAcceptedScreen" class="screen">
+					<img class="screen" src="images/menu-background.png">
+					<span id="helpComingText" class="text"> HELP ON THE WAY </span>
+					<span id="helpTimer"      class="text"></span>
+				</div>
+
+				<!-- Foreground emergency timer -->
+				<div id="foregroundTimer" class="icon">
+					<span id="foregroundTimeleft" class="text"> </span>
+				</div>	
+
+				<!-- Main menu screen -->
+				<div id="mainMenu" class="screen">
+					<img class="screen" src="images/menu-main-round_layout-top.png" usemap="#mainScreen">
+					<img id="findPeople" class="icon" src="images/icon-find_people.png">
+					<img id="findPlaces" class="icon" src="images/icon-find_places.png">
+
+					<div id="mainMenuClock" class="text"></div>
+
+						<map name="mainScreen" id=mainScreen>
+							<area target="" alt="findPeopleButton" title="findPeopleButton"
+							shape="poly"
+							coords="145,293,145,70,128,67,114,59,103,50,95,41,89,34,69,48,51,66,39,84,30,102,24,128,21,157,27,196,41,226,63,251,90,272,115,283"
+							onclick="" >
+				
+							<area target="" alt="findPlacesButton" title="findPlacesButton"
+							shape="poly"
+							coords="168,292,168,71,181,68,197,61,212,49,223,34,249,52,268,76,282,103,292,145,287,190,270,230,248,256,220,275"
+							onclick="" >
+						</map>
+				</div>
+
+				<!-- Starting (welcome) screen -->
+				<div id=startScreen class="screen">
+					<img class="screen" src="images/blue.jpg">
+					<div id="clock" class="text"></div>
+				</div>
+
+				<!-- Vibrating screen simulation -->
+				<div id="vibratingScreen" class="screen"></div>
+
+				<!-- Lock screen, when watch is in screen disabled state -->
+				<div id="lockScreen"  class="screen" onclick="unlock()"></div>
+
+			</div>
+
+		</div>
+
+	</body>
+	<script src="test.js"></script>
+</html>

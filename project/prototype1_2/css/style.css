@@ -1,0 +1,184 @@
+
+/*-----------------------------------------------
+|   Multi selector manipulation
+\------------------------------------------------*/
+#container .body, .screen, .mask, .icon, .button, .text {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	/* border: 2px solid powderblue; */
+}
+
+#container .body {
+	width: 248pt;
+	height: auto;
+}
+
+#container .screen {
+	width: 230pt;
+	height: 230pt;
+	border-radius: 50%;
+}
+
+#container .mask {
+	opacity: 0; /* 0.7 when debugging */
+	z-index: 1;
+	/* border: 2px solid purple; */
+}
+
+#container .icon {
+	pointer-events: none;
+}
+
+#container .text {
+	color: white;
+	font-family: Lucida, sans-serif;
+	text-shadow:
+		-1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
+}
+
+/*-----------------------------------------------
+|   Watch Body
+\------------------------------------------------*/
+#watchBody {
+	z-index: 1;
+	pointer-events: none;
+}
+
+/*-----------------------------------------------
+|   Button Masks
+\------------------------------------------------*/
+#toggleMask {
+	top: 26%;
+	left: 7%;
+	width: 45pt;
+}
+
+#unlockMask {
+	top: 25%;
+	left: 92%;
+	width: 35pt;
+}
+
+#backMask {
+	top: 75%;
+	left: 92%;
+	width: 35pt;
+}
+
+/*-----------------------------------------------
+|   Lock screen
+\------------------------------------------------*/
+#lockScreen {
+	background-color: black;
+	z-index: 2;
+}
+
+/*-----------------------------------------------
+|   Welcome screen (start screen)
+\------------------------------------------------*/
+#clock {
+	text-align: center;
+}
+
+#time{
+	font-size: 55pt;
+	font-weight: bold;
+}
+
+#date{
+	font-size: 21pt;
+}
+
+/*-----------------------------------------------
+|   Main menu
+\------------------------------------------------*/
+
+#findPeople {
+	left: 28%;
+	width: 65pt;
+}
+
+#findPlaces {
+	left: 72%;
+	width: 63pt;
+}
+
+#mainMenuClock {
+	top: 13%;
+	font-size: 22pt;
+}
+
+/*-----------------------------------------------
+|   Emergency screen
+\------------------------------------------------*/
+#emergencyScreen {
+	z-index: 0;
+}
+
+#callHelp {
+	top: 60%;
+	left: 30%;
+	width: 65pt;
+}
+
+#cancelHelp {
+	top: 60%;
+	left: 70%;
+	width: 65pt;
+}
+
+#emergencyTitle {
+	top: 35%;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+/*-----------------------------------------------
+|   Help Declined screen
+\------------------------------------------------*/
+#helpDeclinedScreen {
+	z-index: 0;
+}
+
+#instruction {
+	width: 150pt;
+}
+
+/*-----------------------------------------------
+|   Help Accepted screen
+\------------------------------------------------*/
+#helpAcceptedScreen {
+	opacity: 0.92;
+}
+
+#helpComingText {
+	transform: translateX(-50%) translateY(-150%);
+	font-size: 18pt;
+	text-align: center;
+}
+
+#helpTimer {
+	font-size: 25pt;
+	font-weight: bold;
+}
+
+/*-----------------------------------------------
+|   Foreground emergency timer
+\------------------------------------------------*/
+#foregroundTimer {
+	border-radius: 50%;
+	width: 60pt;
+	height: 30pt;
+	top: 94%;
+	background-color: darkred;
+	z-index: 0;
+}
+
+#foregroundTimeleft {
+	top: 30%;
+}
