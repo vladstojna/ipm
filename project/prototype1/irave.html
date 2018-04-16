@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title> iRave </title>
+		<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
 		<script src="https://hammerjs.github.io/dist/hammer.js">
 		</script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
@@ -10,7 +11,7 @@
 		<link rel="styleSheet" type="text/css" href="css/iravestyle.css">
 	</head>
 
-	<body onload="init()">
+	<body>
 		<div id="container">
 			<div id="vibratingScreen"> </div>
 			<div id="limitScreen"> 
@@ -53,15 +54,18 @@
 					<img id="helpRejectedInstructions" src="images/instruction.png">
 				</div>
 
-				<!-- Added 14/04/2018 -->
 				<div id="ambulance">
 					<img id="ambulanceImg" src="">
 					<div id="ambulanceTimer"> </div>
 				</div>	
-				<!-- -->
+
 			</div>
 
-			<img id="watchBody" src="images/watchBodyOff.png">
+			<div id="watchBody">
+				<img id="watchBodyOn" class="watchBodies" src="images/watch_body_transparent_toggleOn.png">
+				<img id="watchBodyOff" class="watchBodies" src="images/watch_body_transparent_toggleOff.png">
+			</div>
+
 			<div id="switch" onclick="emergencyModeToggle()"> </div>
 			<div id="lockButton" onclick="lock()"> </div>
 			<div id="backButton" onclick="back()"> </div>

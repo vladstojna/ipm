@@ -48,7 +48,6 @@ function updateHours(){
 	document.getElementById("mainMenuClock").innerHTML=
 		"<span id='mainMenuTime'>" + hour + ":" + minutes + "</span>";
 
-	colon = !colon;	
 	/*Run again in 60 seconds*/
 	timer = setTimeout(updateHours, 30000);
 }
@@ -78,8 +77,12 @@ function unlock(){
 ---------------------------------------------------------------------*/
 function emergencyModeToggle(){
 	var watchBody = document.getElementById("watchBody");
-
+	init();
 	if(!emergencyModeOn){ /*Activate emergency mode*/
+		document.getElementById("watchBodyOn").style.display = "initial";
+		document.getElementById("watchBodyOff").style.display = "none";
+		document.getElementById("switch").style.left = "27pt";
+		document.getElementById("switch").style.top = "62pt";
 		screenOnBackground = currentScreen;
 		if(!emergencyCalled) /*Help hasn't been called*/
 			emergencyExchangeScreen(emergency, 3, true);
@@ -89,6 +92,10 @@ function emergencyModeToggle(){
 		}	
 	}
 	else{ /*Deactivate emergency mode*/
+		document.getElementById("watchBodyOff").style.display = "initial";
+		document.getElementById("watchBodyOn").style.display = "none";
+		document.getElementById("switch").style.left = "20pt";
+		document.getElementById("switch").style.top = "71pt";
 		if(currentScreen == helpComing){ /*Help hasn been called*/
 			emergencyExchangeScreen(helpComing, 0, false);
 			if(screenOnBackground != lockScreen)
@@ -101,6 +108,7 @@ function emergencyModeToggle(){
 				emergencyExchangeScreen(emergency, 0, false);
 		currentScreen = screenOnBackground;
 	}
+
 	/*auxiliar function*/
 	function emergencyExchangeScreen(newScreen, newIndex, newMode){
 		previousScreen = currentScreen;
@@ -334,23 +342,16 @@ var container = document.getElementById("container");
 function init(){
 	secondsTic += 1;
 	if(emergencyModeOn){
-		vibratingScreen.style.borderColor = "black";
-		if((secondsTic%4) == 0){
+		if((secondsTic%2) == 0){
 			vibratingScreen.style.boxShadow = shadow0;
 		}
-		if((secondsTic%4) == 1){
-			vibratingScreen.style.boxShadow = shadow3;
-		}
-		if((secondsTic%4) == 2){
-			vibratingScreen.style.boxShadow = shadow0;
-		}
-		if((secondsTic%4) == 3){
+		if((secondsTic%2) == 1){
 			vibratingScreen.style.boxShadow = shadow3;
 		}
 	}
 	else{
-		vibratingScreen.style.borderColor = "transparent";
 		vibratingScreen.style.boxShadow = shadow0;
+		clearTimeout(ticTimer);
 		secondsTic = 0;
 	}
 	/*Run again in 1 second*/
