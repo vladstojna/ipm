@@ -98,8 +98,6 @@ function emergencyModeToggle(){
 		document.getElementById("switch").style.top = "71pt";
 		if(currentScreen == helpComing){ /*Help hasn been called*/
 			emergencyExchangeScreen(helpComing, 0, false);
-			if(screenOnBackground != lockScreen)
-				ambulance.style.zIndex = 9;
 		}
 		else /*Help hasn't been called*/
 			if(currentScreen == helpRejected)
@@ -107,6 +105,8 @@ function emergencyModeToggle(){
 			else
 				emergencyExchangeScreen(emergency, 0, false);
 		currentScreen = screenOnBackground;
+		if(emergencyCalled && screenOnBackground != lockScreen)
+			ambulance.style.zIndex = 9;
 	}
 
 	/*auxiliar function*/
