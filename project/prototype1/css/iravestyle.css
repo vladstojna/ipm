@@ -76,9 +76,6 @@
 
 #mainMenuScreen{
 	z-index: 0;
-	background-image: url("../images/main-menu.png");
-	background-position: center;
-	background-size: 130pt 130pt;
 }
 
 #emergency{

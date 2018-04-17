@@ -326,15 +326,21 @@ function returnStartScreen(){
 function back(){
 	switch(currentScreen){
 		case mainMenuScreen:
-			currentScreen = startScreen;
-			startScreen.style.zIndex = 2;
-			mainMenuScreen.style.zIndex = 1;
+			exchangeScreensBack(mainMenuScreen, startScreen, 1, 2);
 			break;
 		case helpComing:
-			currentScreen = helpRejected;
-			helpRejected.style.zIndex = 3;
-			helpComing.style.zIndex = 0;
+			exchangeScreensBack(helpComing, helpRejected, 0, 3);
 			break;
+		case emergency:
+			exchangeScreensBack(emergency, helpRejected, 0, 3);
+			break;
+	}
+	function exchangeScreensBack(oldScreen, newScreen, oldIndex, newIndex){
+		if(oldIndex >= newIndex)
+			console.log("You sure?");
+		newScreen.style.zIndex = newIndex;
+		oldScreen.style.zIndex = oldIndex;
+		currentScreen = newScreen;
 	} 
 }
 
