@@ -4,6 +4,10 @@ var weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 var previousScreens = {"startScreen":"lockScreen", "mainMenu":"startScreen"};
 /*-------------------------------------------------------------------*/
 
+/* Image maps coordinates */
+var toggle = {coords : [14, 28, 30, 0, 42, 8, 26, 34]}
+/*-------------------------------------------------------------------*/
+
 var timer;
 var emergencyTimer;
 
@@ -17,16 +21,18 @@ var currentScreen = document.getElementById("lockScreen");
 var previousScreen;
 var backgroundScreen; /*used when emegency mode is activated*/
 
-/*--------------- all the screens we'll need -----------------------*/
+/* Screens ----------------------------------------------------------*/
 var lockScreen      = document.getElementById("lockScreen");
 var startScreen     = document.getElementById("startScreen");
 var mainMenuScreen  = document.getElementById("mainMenu");
 var emergency       = document.getElementById("emergencyScreen");
 var helpComing      = document.getElementById("helpAcceptedScreen");
-var helpRejected    = document.getElementById("helpDeclinedScreen");
+var helpDeclined    = document.getElementById("helpDeclinedScreen");
 var ambulance       = document.getElementById("foregroundTimer");
 var vibratingScreen = document.getElementById("vibratingScreen");
-/*-------------------------------------------------------------------*/
+/* Buttons ----------------------------------------------------------*/
+var toggleOn  = document.getElementById("toggleOn");
+var toggleOff = document.getElementById("toggleOff");
 
 /*-------------------------------------------------------------------
 	initVisibility:
@@ -38,13 +44,13 @@ function initVisibility() {
 	hide(mainMenuScreen);
 	hide(emergency);
 	hide(helpComing);
-	hide(helpRejected);
+	hide(helpDeclined);
 	hide(ambulance);
 	//hide(vibratingScreen);
 
 	ambulance.style.zIndex    = 9;
 	helpComing.style.zIndex   = 3;
-	helpRejected.style.zIndex = 3;
+	helpDeclined.style.zIndex = 3;
 	emergency.style.zIndex    = 3;
 	startScreen.style.zIndex = 2;
 	mainMenuScreen.style.zIndex = 1;
@@ -95,13 +101,9 @@ function checkTime(n){
 	showEmergency(screen) - shows screen when working with emergency
 \---------------------------------------------------------------------*/
 function previous(screen)    { previousScreen = screen; }
-
 function current(screen)     { currentScreen = screen; }
-
 function emergencyMode(mode) { emergencyModeOn = mode; }
-
 function hide(screen)        { screen.style.display = "none"; }
-
 function show(screen)        { screen.style.display = "inline"; }
 
 function swap(screenBefore, screenAfter) {
@@ -125,6 +127,43 @@ function showEmergency(screen) {
 	emergencyMode(true);
 }
 
+function backEmergency(screen) {
+	show(helpDeclined);
+	hide(screen);
+	current(helpDeclined);
+}
+
+/*--------------------------------------------------------------------
+	Getters/Setters
+	 getToggleCoords()       - get array of coordinates;
+	 setToggleCoords(coords) - sets coords as new array of coordinates
+
+	 getCoords(area)         - gets coordinates from area
+	 setCoords(area, coords) - sets coords as new area coordinates
+
+	swapToggle() - swaps toggle button coordinates; swaps images
+\---------------------------------------------------------------------*/
+function getToggleCoords()       { return toggle.coords; }
+function setToggleCoords(coords) { toggle.coords = coords; }
+function getCoords(area)         { return area.coords; }
+function setCoords(area, coords) { area.coords = coords; }
+
+function swapToggle() {
+	var area      = document.getElementById("emergencyToggle");
+	var newCoords = getToggleCoords().join(",");
+	var oldCoords = JSON.parse("[" + getCoords(area) + "]");
+	var swap;
+
+	setToggleCoords(oldCoords);
+	setCoords(area, newCoords);
+
+	hide(toggleOff);
+	show(toggleOn);
+	swap      = toggleOff;
+	toggleOff = toggleOn;
+	toggleOn  = swap;
+}
+
 /*--------------------------------------------------------------------
 	unlock() - unlocks screen
 	lock()   - locks screen
@@ -138,7 +177,7 @@ function unlock() {
 }
 
 
-function lock(){
+function lock() {
 	if(emergencyModeOn) return;
 
 	if(currentScreen != lockScreen){
@@ -150,10 +189,18 @@ function lock(){
 }
 
 
-function back(){
-	if(currentScreen == mainMenuScreen) {
-		show(startScreen);
-		current(startScreen);
+function back() {
+	switch (currentScreen) {
+		case mainMenuScreen:
+			show(startScreen);
+			current(startScreen);
+			break;
+		case helpComing:
+			backEmergency(helpComing);
+			break;
+		case emergency:
+			backEmergency(emergency);
+			break;
 	}
 }
 
@@ -174,17 +221,10 @@ function emergencyModeToggle() {
 			hide(ambulance);
 		}	
 	}
-	else { /*Deactivate emergency mode*/
-		if (currentScreen == helpComing) { /*Help hasn been called*/
-			hideEmergency(helpComing);
-			if (backgroundScreen != lockScreen)
-				show(ambulance);
-		}
-		else /*Help hasn't been called*/
-			if (currentScreen == helpRejected)
-				hideEmergency(helpRejected);
-			else
-				hideEmergency(emergency);
+	else { /* Deactivate emergency mode */
+		hideEmergency(currentScreen);
+		if (emergencyCalled && backgroundScreen != lockScreen)
+			show(ambulance);
 		swap(currentScreen, backgroundScreen);
 	}
 }
@@ -196,15 +236,15 @@ function acceptEmergency() {
 	current(helpComing);
 	emergencyCalled = true;
 
-	var minutes = Math.round(Math.random()*10) + 1;
+	var minutes = Math.round(Math.random()*4) + 1;
 	updateEmergencyTime(minutes, 0);
 }
 
 
 function declineEmergency() {
-	show(helpRejected);
+	show(helpDeclined);
 	hide(emergency);
-	current(helpRejected);
+	current(helpDeclined);
 }
 
 
@@ -215,9 +255,9 @@ function updateEmergencyTime(minutes, seconds){
 			"<span id='timeEmergency'> 00:00 </span>";	
 		hide(ambulance);
 		if(emergencyModeOn){
-			show(helpRejected);
+			show(helpDeclined);
 			hide(helpComing);
-			current(helpRejected);
+			current(helpDeclined);
 		}	
 		emergencyCalled = false;
 		return; 
@@ -248,28 +288,28 @@ function updateEmergencyTime(minutes, seconds){
 function vibration() {
 
 	/* shadows */
-	var white  = "0pt 0pt 50pt 0pt white";
-	var yellow = "0pt 0pt 50pt 0pt yellow";
-	var orange = "0pt 0pt 50pt 0pt orange";
-	var red    = "0pt 0pt 50pt 0pt red";
+	var transparent = "0pt 0pt 0pt 0pt rgba(0, 0, 0, 0)"
+	var yellow      = "0pt 0pt 50pt 0pt yellow";
+	var orange      = "0pt 0pt 50pt 0pt orange";
+	var red         = "0pt 0pt 50pt 0pt red";
 
 	secondsTic += 1;
 
 	if (emergencyModeOn) {
 		vibratingScreen.style.borderColor = "black";
 		if ((secondsTic % 4) % 2 == 0)
-			vibratingScreen.style.boxShadow = white;
+			vibratingScreen.style.boxShadow = transparent;
 		else
 			vibratingScreen.style.boxShadow = red;
+		/*Run again in 1 second*/
+		vibrationTimeout = setTimeout(vibration, 500);
 	}
 	else {
 		vibratingScreen.style.borderColor = "transparent";
-		vibratingScreen.style.boxShadow   = white;
+		vibratingScreen.style.boxShadow   = transparent;
 		secondsTic = 0;
 		clearTimeout(vibrationTimeout);
 	}
-	/*Run again in 1 second*/
-	vibrationTimeout = setTimeout(vibration, 500);
 }
 
 /*--------------- Hammer.js library variables ----------------------*/
@@ -297,6 +337,7 @@ mc.on("panup panleft panright pandown tap press", function(ev){
   }
 })
 
+/*-------------------------------------------------------------------*/
 var initTop    = 0;
 var initLeft   = 0;
 var offset     = 115;
@@ -336,7 +377,7 @@ function moveUp() {
   opacity -= opacityRate;
   if(upperBound >= y) {
     clearInterval(movementTimer);
-    returnStartScreen();
+    resetStartScreen();
   }
   else {
     startScreen.style.opacity = opacity;
@@ -350,7 +391,7 @@ function moveDown() {
   opacity -= opacityRate;
   if(lowerBound <= y) {
     clearInterval(movementTimer);
-    returnStartScreen();
+    resetStartScreen();
   }
   else {
     startScreen.style.opacity = opacity;
@@ -364,7 +405,7 @@ function moveLeft() {
   opacity -= opacityRate;
   if(leftBound >= x) {
     clearInterval(movementTimer);
-    returnStartScreen();
+    resetStartScreen();
   }
   else {
     startScreen.style.opacity = opacity;
@@ -378,7 +419,7 @@ function moveRight() {
   opacity -= opacityRate;
   if(rightBound <= x) {
     clearInterval(movementTimer);
-    returnStartScreen();
+    resetStartScreen();
   }
   else {
     startScreen.style.opacity = opacity;
@@ -387,10 +428,10 @@ function moveRight() {
 }
 
 /*--------------------------------------------------------------------
-	returnStartScreen()
+	resetStartScreen()
 	 - returns start screen to usual position after swiping unlock
 \---------------------------------------------------------------------*/
-function returnStartScreen(){
+function resetStartScreen(){
 	swap(startScreen, mainMenuScreen);
   startScreen.style.top = "50%";
   startScreen.style.left = "50%";

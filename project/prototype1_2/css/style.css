@@ -21,8 +21,15 @@
 	border-radius: 50%;
 }
 
+/*
 #container .mask {
-	opacity: 0; /* 0.7 when debugging */
+	opacity: 0; 0.7 when debugging
+	z-index: 1;
+	border: 2px solid purple;
+}
+*/
+
+#container .button {
 	z-index: 1;
 	/* border: 2px solid purple; */
 }
@@ -33,7 +40,7 @@
 
 #container .text {
 	color: white;
-	font-family: Lucida, sans-serif;
+	font-family: 'Ubuntu', sans-serif;
 	text-shadow:
 		-1px -1px 0 black,
      1px -1px 0 black,
@@ -52,19 +59,25 @@
 /*-----------------------------------------------
 |   Button Masks
 \------------------------------------------------*/
-#toggleMask {
+#toggleOff {
 	top: 26%;
 	left: 7%;
 	width: 45pt;
 }
 
-#unlockMask {
+#toggleOn {
+	top: 26%;
+	left: 7%;
+	width: 45pt;
+}
+
+#unlock {
 	top: 25%;
 	left: 92%;
 	width: 35pt;
 }
 
-#backMask {
+#back {
 	top: 75%;
 	left: 92%;
 	width: 35pt;
@@ -82,6 +95,7 @@
 |   Welcome screen (start screen)
 \------------------------------------------------*/
 #clock {
+	top: 49%;
 	text-align: center;
 }
 
@@ -99,18 +113,18 @@
 \------------------------------------------------*/
 
 #findPeople {
-	left: 28%;
-	width: 65pt;
+	left: 30%;
+	width: 60pt;
 }
 
 #findPlaces {
-	left: 72%;
-	width: 63pt;
+	left: 70%;
+	width: 58pt;
 }
 
 #mainMenuClock {
 	top: 13%;
-	font-size: 22pt;
+	font-size: 24pt;
 }
 
 /*-----------------------------------------------
@@ -153,17 +167,17 @@
 |   Help Accepted screen
 \------------------------------------------------*/
 #helpAcceptedScreen {
-	opacity: 0.92;
+	opacity: 0.95;
 }
 
 #helpComingText {
-	transform: translateX(-50%) translateY(-150%);
+	top: 30%;
 	font-size: 18pt;
 	text-align: center;
 }
 
 #helpTimer {
-	font-size: 25pt;
+	font-size: 28pt;
 	font-weight: bold;
 }
 
@@ -174,11 +188,12 @@
 	border-radius: 50%;
 	width: 60pt;
 	height: 30pt;
-	top: 94%;
+	top: 93%;
 	background-color: darkred;
 	z-index: 0;
 }
 
 #foregroundTimeleft {
-	top: 30%;
+	top: 34%;
+	font-size: 15pt;
 }
