@@ -1,7 +1,22 @@
 /*------------------- auxiliar variables ----------------------------*/
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-var previousScreens = {"startScreen":"lockScreen", "mainMenu":"startScreen"};
+
+var screenOrder = {
+	previous : {
+		"lockScreen":"lockScreen",
+		"startScreen":"lockScreen",
+		"mainMenu":"startScreen",
+		"emergencyScreen":"helpDeclinedScreen",
+		"helpAcceptedScreen":"helpDeclinedScreen",
+	},
+	next : {
+		"lockScreen":"startScreen",
+		"startScreen":"mainMenu",
+		"mainMenu":"mainMenu",
+	}
+}
+
 /*-------------------------------------------------------------------*/
 
 /* Image maps coordinates */
@@ -48,11 +63,11 @@ function initVisibility() {
 	hide(ambulance);
 	//hide(vibratingScreen);
 
-	ambulance.style.zIndex    = 9;
-	helpComing.style.zIndex   = 3;
-	helpDeclined.style.zIndex = 3;
-	emergency.style.zIndex    = 3;
-	startScreen.style.zIndex = 2;
+	ambulance.style.zIndex      = 9;
+	helpComing.style.zIndex     = 3;
+	helpDeclined.style.zIndex   = 3;
+	emergency.style.zIndex      = 3;
+	startScreen.style.zIndex    = 2;
 	mainMenuScreen.style.zIndex = 1;
 }
 
@@ -104,7 +119,7 @@ function previous(screen)    { previousScreen = screen; }
 function current(screen)     { currentScreen = screen; }
 function emergencyMode(mode) { emergencyModeOn = mode; }
 function hide(screen)        { screen.style.display = "none"; }
-function show(screen)        { screen.style.display = "inline"; }
+function show(screen)        { screen.style.display = "block"; }
 
 function swap(screenBefore, screenAfter) {
 	show(screenAfter);
@@ -318,112 +333,101 @@ mc.get('pan').set({direction: Hammer.DIRECTION_ALL});
 /*-------------------------------------------------------------------*/
 
 mc.on("panup panleft panright pandown tap press", function(ev){
-  mainMenuScreen.style.zIndex = 1;
+  show(mainMenuScreen);
   if(ev.type == "panup") {
     clearInterval(movementTimer);
-    up();
+    move(up);
   }
   if(ev.type == "pandown") {
     clearInterval(movementTimer);
-    down();
+    move(down);
   }
   if(ev.type == "panleft") {
     clearInterval(movementTimer);
-    left();
+    move(left);
   }
   if(ev.type == "panright") {
     clearInterval(movementTimer);
-    right();
+    move(right);
   }
 })
 
 /*-------------------------------------------------------------------*/
 var initTop    = 0;
 var initLeft   = 0;
-var offset     = 115;
-var bound      = 10;
+var bound      = 100;
 var upperBound = -bound;
-var lowerBound = bound;
+var lowerBound =  bound;
 var leftBound  = -bound;
-var rightBound = bound;
+var rightBound =  bound;
 
 var y = initTop;
 var x = initLeft;
 
 var opacity = 1;
-var opacityRate = 0.1;
+var opacityRate = 0.02;
+
+var timeInterval = 1;
 
 var movementTimer;
 
+function move(direction) {
+	movementTimer = setInterval(direction, timeInterval);
+}
+
 function up() {
-  movementTimer = setInterval(moveUp, 30);
-}
-
-function down() {
-  movementTimer = setInterval(moveDown, 30);
-}
-
-function left() {
-  movementTimer = setInterval(moveLeft, 30);
-}
-
-function right() {
-  movementTimer = setInterval(moveRight, 30);
-}
-
-function moveUp() {
-	show(mainMenuScreen);
 	y--;
   opacity -= opacityRate;
   if(upperBound >= y) {
     clearInterval(movementTimer);
-    resetStartScreen();
+		//resetStartScreen();
+		resetScreen(startScreen);
   }
   else {
     startScreen.style.opacity = opacity;
-    startScreen.style.top = offset + y + "pt";
+    startScreen.style.top = y + "pt";
   }
 }
 
-function moveDown() {
-	show(mainMenuScreen);
+function down() {
   y++;
   opacity -= opacityRate;
   if(lowerBound <= y) {
     clearInterval(movementTimer);
-    resetStartScreen();
+		//resetStartScreen();
+		resetScreen(startScreen);
   }
   else {
     startScreen.style.opacity = opacity;
-    startScreen.style.top = offset + y + "pt";
+    startScreen.style.top = y + "pt";
   }
 }
 
-function moveLeft() {
-	show(mainMenuScreen);
+function left() {
   x--;
   opacity -= opacityRate;
   if(leftBound >= x) {
     clearInterval(movementTimer);
-    resetStartScreen();
+		//resetStartScreen();
+		resetScreen(startScreen);
   }
   else {
     startScreen.style.opacity = opacity;
-    startScreen.style.left = offset + x + "pt";
+    startScreen.style.left = x + "pt";
   }
 }
 
-function moveRight() {
-	show(mainMenuScreen);
+function right() {
   x++;
   opacity -= opacityRate;
   if(rightBound <= x) {
     clearInterval(movementTimer);
-    resetStartScreen();
+		//resetStartScreen();
+		resetScreen(startScreen);
   }
   else {
     startScreen.style.opacity = opacity;
-    startScreen.style.left = offset + x + "pt";
+    startScreen.style.left = x + "pt";
   }
 }
 
@@ -433,10 +437,32 @@ function moveRight() {
 \---------------------------------------------------------------------*/
 function resetStartScreen(){
 	swap(startScreen, mainMenuScreen);
-  startScreen.style.top = "50%";
-  startScreen.style.left = "50%";
+  startScreen.style.top = "0";
+  startScreen.style.left = "0";
   x = initLeft;
   y = initTop;
   opacity = 1;
 	startScreen.style.opacity = 1;
+}
+
+function resetProperties(screen) {
+	screen.style.top  = "0";
+	screen.style.left = "0";
+	screen.style.opacity = 1;
+}
+
+function nextScreen(screen) {
+	return document.getElementById(screenOrder.next[screen.id]);
+}
+
+function prevScreen(screen) {
+	return document.getElementById(screenOrder.previous[screen.id]);
+}
+
+function resetScreen(screen) {
+	swap(screen, nextScreen(screen));
+	resetProperties(screen);
+  x = initLeft;
+  y = initTop;
+  opacity = 1;
 }

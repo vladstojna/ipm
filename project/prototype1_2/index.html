@@ -14,17 +14,13 @@
 		<div id="container">
 
 			<!-- Main watch body image -->
-			<img id="watchBody"  class="body" src="images/watch_body_transparent_noButtons.png">
+			<img id="watchBody"  class="center" src="images/watch_body_transparent_noButtons.png">
 
 			<!-- Vibrating screen simulation -->
-			<div id="vibratingScreen" class="screen"></div>
+			<div id="vibratingScreen" class="center screen"></div>
 
 			<!-- Mask wrapper -->
-			<div id=buttonWrapper class="screen">
-				<!-- <img id="toggleMask" class="mask" src="images/button_masks/mask-toggle.png" usemap="#toggleButton">
-				<!<img id="unlockMask" class="mask" src="images/button_masks/mask-unlock.png" usemap="#unlockButton">
-				<!<img id="backMask"   class="mask" src="images/button_masks/mask-back.png"   usemap="#backButton"> -->
-
+			<div id=buttonWrapper class="center screen">
 				<!-- Buttons and their respective maps -->
 				<img id="toggleOff" class="button" src="images/buttons/button-toggleOff.png" usemap="#toggleMap">
 				<img id="toggleOn"  class="button" src="images/buttons/button-toggleOn.png"  usemap="#toggleMap" style="display: none">
@@ -52,11 +48,11 @@
 			</div>
 
 			<!-- Wrapper that holds relevant data -->
-			<div id="wrapper" class="screen">
+			<div id="wrapper" class="center screen" style="overflow: hidden">
 
 				<!-- Emergency screen -->
 				<div id="emergencyScreen" class="screen">
-					<img class="screen" src="images/menus/menu-background.png">
+					<img class="screen" src="images/menus/menu-background.png" style="opacity: 0.95">
 					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#acceptMap">
 					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#declineMap">
 
@@ -78,13 +74,13 @@
 
 				<!-- Help declined screen, when emergency call is canceled -->
 				<div id="helpDeclinedScreen" class="screen">
-					<img class="screen" src="images/menus/menu-background.png">
+					<img class="screen" src="images/menus/menu-background.png" style="opacity: 0.95">
 					<img id="instruction"    class="icon"   src="images/icons/icon-untoggle.png">
 				</div>
 
 				<!-- Help accepted screen, when emergency call is successful -->
 				<div id="helpAcceptedScreen" class="screen">
-					<img class="screen" src="images/menus/menu-background.png">
+					<img class="screen" src="images/menus/menu-background.png" style="opacity: 0.95">
 					<span id="helpComingText" class="text"> HELP ON THE WAY </span>
 					<span id="helpTimer"      class="text"></span>
 				</div>
@@ -116,9 +112,8 @@
 				</div>
 
 				<!-- Starting (welcome) screen -->
-				<div id=startScreen class="screen">
-					<img class="screen" src="images/blue.jpg">
-					<div id="clock" class="text"></div>
+				<div id=startScreen class="screen" style="background-image: url(images/blue.jpg)">
+					<span id="clock" class="text"></span>
 				</div>
 
 				<!-- Lock screen, when watch is in screen disabled state -->

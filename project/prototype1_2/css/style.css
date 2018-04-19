@@ -2,36 +2,26 @@
 /*-----------------------------------------------
 |   Multi selector manipulation
 \------------------------------------------------*/
-#container .body, .screen, .mask, .icon, .button, .text {
+#container .center, .screen, .icon, .button, .text {
 	position: absolute;
+	/* border: 2px solid purple; */
+}
+
+#container .center, .icon, .button, .text {
   top: 50%;
   left: 50%;
 	transform: translateX(-50%) translateY(-50%);
-	/* border: 2px solid powderblue; */
-}
-
-#container .body {
-	width: 248pt;
-	height: auto;
 }
 
 #container .screen {
 	width: 230pt;
 	height: 230pt;
+	background-size: 230pt 230pt;
 	border-radius: 50%;
 }
 
-/*
-#container .mask {
-	opacity: 0; 0.7 when debugging
-	z-index: 1;
-	border: 2px solid purple;
-}
-*/
-
 #container .button {
 	z-index: 1;
-	/* border: 2px solid purple; */
 }
 
 #container .icon {
@@ -52,6 +42,8 @@
 |   Watch Body
 \------------------------------------------------*/
 #watchBody {
+	width: 248pt;
+	height: auto;
 	z-index: 1;
 	pointer-events: none;
 }
@@ -59,13 +51,7 @@
 /*-----------------------------------------------
 |   Button Masks
 \------------------------------------------------*/
-#toggleOff {
-	top: 26%;
-	left: 7%;
-	width: 45pt;
-}
-
-#toggleOn {
+#toggleOff, #toggleOn {
 	top: 26%;
 	left: 7%;
 	width: 45pt;
@@ -111,7 +97,6 @@
 /*-----------------------------------------------
 |   Main menu
 \------------------------------------------------*/
-
 #findPeople {
 	left: 30%;
 	width: 60pt;
@@ -130,10 +115,6 @@
 /*-----------------------------------------------
 |   Emergency screen
 \------------------------------------------------*/
-#emergencyScreen {
-	z-index: 0;
-}
-
 #callHelp {
 	top: 60%;
 	left: 30%;
@@ -155,10 +136,6 @@
 /*-----------------------------------------------
 |   Help Declined screen
 \------------------------------------------------*/
-#helpDeclinedScreen {
-	z-index: 0;
-}
-
 #instruction {
 	width: 150pt;
 }
@@ -166,10 +143,6 @@
 /*-----------------------------------------------
 |   Help Accepted screen
 \------------------------------------------------*/
-#helpAcceptedScreen {
-	opacity: 0.95;
-}
-
 #helpComingText {
 	top: 30%;
 	font-size: 18pt;
@@ -186,10 +159,11 @@
 \------------------------------------------------*/
 #foregroundTimer {
 	border-radius: 50%;
-	width: 60pt;
-	height: 30pt;
+	width: 70pt;
+	height: 35pt;
 	top: 93%;
 	background-color: darkred;
+	border: 2px solid rgb(194, 194, 194);
 	z-index: 0;
 }
 
