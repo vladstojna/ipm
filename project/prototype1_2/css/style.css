@@ -8,8 +8,8 @@
 }
 
 #container .center, .icon, .button, .text {
-  top: 50%;
-  left: 50%;
+	top: 50%;
+	left: 50%;
 	transform: translateX(-50%) translateY(-50%);
 }
 
@@ -33,9 +33,9 @@
 	font-family: 'Ubuntu', sans-serif;
 	text-shadow:
 		-1px -1px 0 black,
-     1px -1px 0 black,
-    -1px  1px 0 black,
-     1px  1px 0 black;
+		 1px -1px 0 black,
+		-1px  1px 0 black,
+		 1px  1px 0 black;
 }
 
 /*-----------------------------------------------
@@ -163,7 +163,7 @@
 	height: 35pt;
 	top: 93%;
 	background-color: darkred;
-	border: 2px solid rgb(194, 194, 194);
+	border: 1px solid rgb(194, 194, 194);
 	z-index: 0;
 }
 
