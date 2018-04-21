@@ -2,24 +2,6 @@
 var months   = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-
-/* Screen order Hash map -----------------------------------*/
-var screenOrder = {
-	previous : {
-		"lockScreen"  : "lockScreen",
-		"startScreen" : "startScreen",
-		"mainMenu"    : "startScreen",
-		"emergencyScreen"    : "helpDeclinedScreen",
-		"helpAcceptedScreen" : "helpDeclinedScreen",
-		"helpDeclinedScreen" : "helpDeclinedScreen"
-	},
-	next : {
-		"lockScreen"  : "startScreen",
-		"startScreen" : "mainMenu",
-		"mainMenu"    : "mainMenu",
-	}
-}
-
 /*-------------------------------------------------------------------*/
 var emergencyTimer;
 var vibrationTimeout;
@@ -38,7 +20,6 @@ var ambulance       = document.getElementById("foregroundTimer");
 var vibratingScreen = document.getElementById("vibratingScreen");
 
 var currentScreen = lockScreen;
-var previousScreen; /* unused at the moment */
 var backgroundScreen; /*used when emegency mode is activated*/
 
 /* Buttons ----------------------------------------------------------*/
@@ -52,14 +33,127 @@ var toggle = {coords : [14, 28, 30, 0, 42, 8, 26, 34]}
 var shadowTransparent = "0pt 0pt 0pt 0pt rgba(0, 0, 0, 0)"
 var shadowRed         = "0pt 0pt 50pt 0pt red";
 
-/*-------------------------------------------------------------------
+/* Main Interface ----------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------
+  valid(element) - checks if 'element' is valid
+
+  setPrev(screen, prev) - sets 'prev' as previous screen of 'screen'
+  setNext(screen, next) - sets 'next' as next screen of 'screen'
+
+  getNext(screen) - gets next screen of 'screen'
+  getPrev(screen) - gets previous screen of 'screen'
+
+  current(screen)     - sets 'screen' as current screen
+  background(screen)  - sets 'screen' as background screen
+
+  emergencyMode(mode) - sets 'mode' as emergency mode
+
+  zIndex(element, z)  - sets 'z' as z-index of 'element'
+
+  hide(element) - hides 'element'
+  show(element) - shows 'element'
+
+  getButtonCoords(button) - gets map coordinates of 'button'
+  getAreaCoords(area)     - gets map coordinates of 'area'
+
+  setButtonCoords(button, coords) - sets 'coords' as coords of 'button'
+  setAreaCoords(area, coords)     - sets 'coords' as coords of 'area'
+
+  swap(screenBefore, screenAfter) -
+    swaps 'screenBefore' with 'screenAfter'
+
+  hideEmergency(screen, bg) - swaps 'screen' with 'bg' and sets mode
+  showEmergency(screen, bg) - shows 'screen' over 'bg' and sets mode
+
+  resetProperties(screen) - resets position and opacity of 'screen'
+  resetScreen(screen)     - resets 
+
+  swapIcon(button, oldIcon, newIcon, areaId) -
+	swaps area from 'areaId' coords with 'button' coords;
+	swaps 'oldIcon' with 'newIcon';
+	returns array of icons
+---------------------------------------------------------------------*/
+function valid(element) { return element instanceof Element; }
+
+function setPrev(screen, prev)  { screen.prev = prev;  }
+function setNext(screen, next)  { screen.next = next;  }
+
+function getNext(screen) { return screen.next; }
+function getPrev(screen) { return screen.prev; } 
+
+function current(screen)     { currentScreen    = screen;  }
+function background(screen)  { backgroundScreen = screen;  }
+
+function emergencyMode(mode) { emergencyModeOn  = mode;     }
+
+function zIndex(element, z)  { if (valid(element)) element.style.zIndex = z;   }
+
+function hide(element)       { if (valid(element)) element.style.visibility = "hidden";  }
+function show(element)       { if (valid(element)) element.style.visibility = "visible"; }
+
+function getButtonCoords(button) { return button.coords; }
+function getAreaCoords(area)     { return area.coords; }
+
+function setButtonCoords(button, coords) { button.coords = coords; }
+function setAreaCoords(area, coords)     { area.coords = coords; }
+
+
+function swap(screenBefore, screenAfter) {
+	if (!valid(screenBefore) || !valid(screenAfter)) {
+		console.error("swap: invalid parameters", [screenBefore, screenAfter]);
+		return;
+	}
+	if (screenBefore != screenAfter) {
+		show(screenAfter);
+		hide(screenBefore);
+		current(screenAfter);
+	}
+}
+
+function hideEmergency(screen, bg) {
+	swap(screen, bg);
+	emergencyMode(false);
+}
+
+function showEmergency(screen, bg) {
+	show(screen);
+	current(screen);
+	background(bg);
+	emergencyMode(true);
+}
+
+/* Generic reset properties function */
+function resetProperties(screen) {
+	screen.style.top     = "0pt";
+	screen.style.left    = "0pt";
+	screen.style.opacity = 1;
+}
+
+/* Generic icon and image map swapper */
+function swapIcon(button, oldIcon, newIcon, areaId) {
+	var area      = document.getElementById(areaId);
+	var newCoords = button.coords.join(",");
+	var oldCoords = JSON.parse("[" + getAreaCoords(area) + "]");
+
+	setButtonCoords(button, oldCoords);
+	setAreaCoords(area, newCoords);
+
+	hide(oldIcon);
+	show(newIcon);
+	return [oldIcon, newIcon];
+}
+
+/* Functions onload --------------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------
   initVisibility:
-   hides all screens but lockScreen;
+   hides uneeded screens and buttons;
    initializes zIndexes
 
   initScreenOrder:
     adds previous and next properties to screens
-\--------------------------------------------------------------------*/
+----------------------------------------------------------------------*/
 function initVisibility() {
 
 	// Hide uneeded screens at the start
@@ -84,22 +178,23 @@ function initVisibility() {
 }
 
 function initScreenOrder() {
-	lockScreen.prev   = lockScreen;
-	startScreen.prev  = startScreen;
-	mainMenu.prev     = startScreen;
-	emergency.prev    = helpDeclined;
-	helpComing.prev   = helpDeclined;
-	helpDeclined.prev = helpDeclined;
+	setPrev(lockScreen,   lockScreen);
+	setPrev(startScreen,  startScreen);
+	setPrev(mainMenu,     startScreen);
+	setPrev(emergency,    helpDeclined);
+	setPrev(helpComing,   helpDeclined);
+	setPrev(helpDeclined, helpDeclined);
 
-	lockScreen.next  = startScreen;
-	startScreen.next = mainMenu;
-	mainMenu.next    = mainMenu;
+	setNext(lockScreen,  startScreen);
+	setNext(startScreen, mainMenu);
+	setNext(mainMenu,    mainMenu);
 }
+/* -------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------
   updateHours - called every minute to update the time display
   checkTime   - formats time correctly
-\---------------------------------------------------------------------*/
+---------------------------------------------------------------------*/
 function updateHours() {
 	var date    = new Date(); /* System date */
 	var month   = months[date.getMonth()];
@@ -127,123 +222,10 @@ function checkTime(n) {
 }
 
 /*--------------------------------------------------------------------
-  Setters:
-   previous(screen)    - sets screen as previous screen *unused atm*
-   current(screen)     - sets screen as current screen
-   emergencyMode(mode) - sets mode as emergency mode
-   hide(screen)        - hides screen
-   show(screen)        - shows screen
-
-  swap(screenBefore, screenAfter) -
-    swaps screenBefore with screenAfter
-
-  hideEmergency(screen) - hides screen when working with emergency
-  showEmergency(screen) - shows screen when working with emergency
-\---------------------------------------------------------------------*/
-function valid(element)      { return element instanceof Element; }
-function previous(screen)    { previousScreen   = screen;  }
-function current(screen)     { currentScreen    = screen;  }
-function background(screen)  { backgroundScreen = screen;  }
-function emergencyMode(mode) { emergencyModeOn = mode;     }
-function zIndex(element, z)  { if (valid(element)) element.style.zIndex = z;   }
-function hide(element)       { if (valid(element)) element.style.visibility = "hidden";  }
-function show(element)       { if (valid(element)) element.style.visibility = "visible"; }
-
-function swap(screenBefore, screenAfter) {
-	if (!valid(screenBefore) || !valid(screenAfter)) {
-		console.error("swap: invalid parameters", [screenBefore, screenAfter]);
-		return;
-	}
-	if (screenBefore != screenAfter) {
-		show(screenAfter);
-		hide(screenBefore);
-		current(screenAfter);
-	}
-}
-
-function hideEmergency(screen, bg) {
-	swap(screen, bg);
-	emergencyMode(false);
-}
-
-function showEmergency(screen, bg) {
-	show(screen);
-	current(screen);
-	background(bg);
-	emergencyMode(true);
-}
-
-/* Uneeded but kept */
-function backEmergency(screen) {
-	swap(screen, helpDeclined);
-}
-
-/* nextScreen and prevScreen getters */
-function nextScreen(screen) {
-	return screen.next;
-	//return document.getElementById(screenOrder.next[screen.id]);
-}
-
-function prevScreen(screen) {
-	return screen.prev;
-	//return document.getElementById(screenOrder.previous[screen.id]);
-}
-
-/* Generic reset screen function */
-function resetScreen(screen) {
-	swap(screen, nextScreen(screen));
-	resetProperties(screen);
-	x = initLeft;
-	y = initTop;
-	opacity = 1;
-}
-
-/* Generic reset properties function */
-function resetProperties(screen) {
-	screen.style.top     = "0pt";
-	screen.style.left    = "0pt";
-	screen.style.opacity = 1;
-}
-
-/*--------------------------------------------------------------------
-  Getters/Setters
-   getToggleCoords()       - get array of coordinates;
-   setToggleCoords(coords) - sets coords as new array of coordinates
-
-   getCoords(area)         - gets coordinates from area
-   setCoords(area, coords) - sets coords as new area coordinates
-
-  swapToggle() - swaps toggle button coordinates; swaps images
-\---------------------------------------------------------------------*/
-function getButtonCoords(button)         { return button.coords; }
-function setButtonCoords(button, coords) { button.coords = coords; }
-
-function getAreaCoords(area)         { return area.coords; }
-function setAreaCoords(area, coords) { area.coords = coords; }
-
-/* generic icon and image map swapper */
-function swapIcon(button, oldIcon, newIcon, areaId) {
-	var area      = document.getElementById(areaId);
-	var newCoords = button.coords.join(",");
-	var oldCoords = JSON.parse("[" + getAreaCoords(area) + "]");
-
-	setButtonCoords(button, oldCoords);
-	setAreaCoords(area, newCoords);
-
-	hide(oldIcon);
-	show(newIcon);
-	return [oldIcon, newIcon];
-}
-
-function swapToggle() {
-	[toggleOn, toggleOff] = swapIcon(toggle, toggleOff, toggleOn, "emergencyToggle");
-}
-
-/*--------------------------------------------------------------------
   unlock() - unlocks screen
   lock()   - locks screen
   back()   - returns to previous screen
-\---------------------------------------------------------------------*/
+---------------------------------------------------------------------*/
 function unlock() {
 	if (emergencyCalled)
 		show(ambulance);
@@ -265,7 +247,7 @@ function lock() {
 
 
 function back() {
-	swap(currentScreen, prevScreen(currentScreen));
+	swap(currentScreen, getPrev(currentScreen));
 }
 
 /*--------------------------------------------------------------------
@@ -274,7 +256,8 @@ function back() {
   acceptEmergency()     - sends call for help
   declineEmergency()    - cancel call for help
   updateEmergencyTime() - updates time left for help to come
-\---------------------------------------------------------------------*/
+  swapToggle()          - swaps toggle button map and icon image
+---------------------------------------------------------------------*/
 function emergencyModeToggle() {
 	if (!emergencyModeOn) { /*Activate emergency mode*/
 		if (!emergencyCalled) /*Help hasn't been called*/
@@ -338,9 +321,14 @@ function updateEmergencyTime(minutes, seconds){
 	emergencyTimer = setTimeout(updateEmergencyTime, 1000, minutes, seconds);
 }
 
+
+function swapToggle() {
+	[toggleOn, toggleOff] = swapIcon(toggle, toggleOff, toggleOn, "emergencyToggle");
+}
+
 /*--------------------------------------------------------------------
   vibration() - simulates vibrating effect when in emergency mode
-\---------------------------------------------------------------------*/
+---------------------------------------------------------------------*/
 function vibration() {
 
 	secondsTic += 1;
@@ -411,6 +399,7 @@ function move(direction, interval, screen, bound) {
 	movementTimer = setInterval(direction, interval, screen, bound);
 }
 
+
 function up(screen, bound) {
 	y--;
 	opacity -= opacityRate;
@@ -423,6 +412,7 @@ function up(screen, bound) {
 		screen.style.top = y + "pt";
 	}
 }
+
 
 function down(screen, bound) {
 	y++;
@@ -437,6 +427,7 @@ function down(screen, bound) {
 	}
 }
 
+
 function left(screen, bound) {
 	x--;
 	opacity -= opacityRate;
@@ -449,6 +440,7 @@ function left(screen, bound) {
 		screen.style.left    = x + "pt";
 	}
 }
+
 
 function right(screen, bound) {
 	x++;
@@ -463,80 +455,11 @@ function right(screen, bound) {
 	}
 }
 
-/*-------------------------------------------------------------------*/
-
-/*
-function move(direction) {
-	movementTimer = setInterval(direction, timeInterval);
-}
-
-function up() {
-	y--;
-	opacity -= opacityRate;
-	if(upperBound >= y) {
-		clearInterval(movementTimer);
-		//resetStartScreen();
-		resetScreen(startScreen);
-	}
-	else {
-		startScreen.style.opacity = opacity;
-		startScreen.style.top = y + "pt";
-	}
-}
-
-function down() {
-	y++;
-	opacity -= opacityRate;
-	if (lowerBound <= y) {
-		clearInterval(movementTimer);
-		//resetStartScreen();
-		resetScreen(startScreen);
-	}
-	else {
-		startScreen.style.opacity = opacity;
-		startScreen.style.top = y + "pt";
-	}
-}
-
-function left() {
-	x--;
-	opacity -= opacityRate;
-	if(leftBound >= x) {
-		clearInterval(movementTimer);
-		//resetStartScreen();
-		resetScreen(startScreen);
-	}
-	else {
-		startScreen.style.opacity = opacity;
-		startScreen.style.left = x + "pt";
-	}
-}
-
-function right() {
-	x++;
-	opacity -= opacityRate;
-	if(rightBound <= x) {
-		clearInterval(movementTimer);
-		//resetStartScreen();
-		resetScreen(startScreen);
-	}
-	else {
-		startScreen.style.opacity = opacity;
-		startScreen.style.left = x + "pt";
-	}
-}
-*/
-
-/*--------------------------------------------------------------------
-  resetStartScreen()
-   - returns start screen to usual position after swiping unlock
-\---------------------------------------------------------------------*/
-function resetStartScreen() {
-	swap(startScreen, mainMenu);
-	startScreen.style.top = "0pt";
-	startScreen.style.left = "0pt";
+/* Generic reset screen function */
+function resetScreen(screen) {
+	swap(screen, getNext(screen));
+	resetProperties(screen);
 	x = initLeft;
 	y = initTop;
 	opacity = 1;
-	startScreen.style.opacity = 1;
 }
