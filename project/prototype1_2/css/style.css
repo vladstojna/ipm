@@ -20,6 +20,11 @@
 	border-radius: 50%;
 }
 
+#container .background {
+	opacity: 0.95;
+	pointer-events: none;
+}
+
 #container .button {
 	z-index: 1;
 }
@@ -74,7 +79,6 @@
 \------------------------------------------------*/
 #lockScreen {
 	background-color: black;
-	z-index: 2;
 }
 
 /*-----------------------------------------------
@@ -164,7 +168,6 @@
 	top: 93%;
 	background-color: darkred;
 	border: 1px solid rgb(194, 194, 194);
-	z-index: 0;
 }
 
 #foregroundTimeleft {

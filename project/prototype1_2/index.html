@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu"> 
 		<link rel="styleSheet" type="text/css" href="css/style.css">
 	</head>
-	<body onload="initVisibility()">
+	<body onload="initVisibility(); initScreenOrder()">
 		<!-- Container with all elements -->
 		<div id="container">
 
@@ -23,7 +23,7 @@
 			<div id=buttonWrapper class="center screen">
 				<!-- Buttons and their respective maps -->
 				<img id="toggleOff" class="button" src="images/buttons/button-toggleOff.png" usemap="#toggleMap">
-				<img id="toggleOn"  class="button" src="images/buttons/button-toggleOn.png"  usemap="#toggleMap" style="display: none">
+				<img id="toggleOn"  class="button" src="images/buttons/button-toggleOn.png"  usemap="#toggleMap">
 				<img id="unlock"    class="button" src="images/buttons/button-unlock.png"    usemap="#unlockMap">
 				<img id="back"      class="button" src="images/buttons/button-back.png"      usemap="#backMap">
 
@@ -52,7 +52,7 @@
 
 				<!-- Emergency screen -->
 				<div id="emergencyScreen" class="screen">
-					<img class="screen" src="images/menus/menu-background.png" style="opacity: 0.95">
+					<img class="background screen"       src="images/menus/menu-background.png">
 					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#acceptMap">
 					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#declineMap">
 
@@ -74,13 +74,13 @@
 
 				<!-- Help declined screen, when emergency call is canceled -->
 				<div id="helpDeclinedScreen" class="screen">
-					<img class="screen" src="images/menus/menu-background.png" style="opacity: 0.95">
-					<img id="instruction"    class="icon"   src="images/icons/icon-untoggle.png">
+					<img class="background screen"     src="images/menus/menu-background.png">
+					<img id="instruction" class="icon" src="images/icons/icon-untoggle.png">
 				</div>
 
 				<!-- Help accepted screen, when emergency call is successful -->
 				<div id="helpAcceptedScreen" class="screen">
-					<img class="screen" src="images/menus/menu-background.png" style="opacity: 0.95">
+					<img class="background screen" src="images/menus/menu-background.png">
 					<span id="helpComingText" class="text"> HELP ON THE WAY </span>
 					<span id="helpTimer"      class="text"></span>
 				</div>
