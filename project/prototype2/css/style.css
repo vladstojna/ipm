@@ -1,0 +1,206 @@
+
+/*-----------------------------------------------
+|   Multi selector manipulation
+\------------------------------------------------*/
+#container .center, .screen, .icon, .button, .onscreen, .text {
+	position: absolute;
+	border: 1px solid purple;
+}
+
+#container .center, .icon, .button, .text {
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+#container .screen {
+	width: 230pt;
+	height: 230pt;
+	background-size: 230pt 230pt;
+	border-radius: 50%;
+}
+
+#container .background {
+	opacity: 0.95;
+	pointer-events: none;
+}
+
+#container .button {
+	z-index: 1;
+}
+
+#container .icon {
+	pointer-events: none;
+}
+
+#container .text {
+	color: white;
+	font-family: 'Ubuntu', sans-serif;
+	text-shadow:
+		-1px -1px 0 black,
+		 1px -1px 0 black,
+		-1px  1px 0 black,
+		 1px  1px 0 black;
+}
+
+/*-----------------------------------------------
+|   Watch Body
+\------------------------------------------------*/
+#watchBody {
+	width: 248pt;
+	height: auto;
+	z-index: 1;
+	pointer-events: none;
+}
+
+/*-----------------------------------------------
+|   Button Masks
+\------------------------------------------------*/
+#toggleOff, #toggleOn {
+	top: 26%;
+	left: 7%;
+	width: 45pt;
+}
+
+#unlock {
+	top: 25%;
+	left: 92%;
+	width: 35pt;
+}
+
+#back {
+	top: 75%;
+	left: 92%;
+	width: 35pt;
+}
+
+/*-----------------------------------------------
+|   Lock screen
+\------------------------------------------------*/
+#lockScreen {
+	background-color: black;
+}
+
+/*-----------------------------------------------
+|   Welcome screen (start screen)
+\------------------------------------------------*/
+#clock {
+	top: 49%;
+	text-align: center;
+}
+
+#time{
+	font-size: 55pt;
+	font-weight: bold;
+}
+
+#date{
+	font-size: 21pt;
+}
+
+/*-----------------------------------------------
+|   Main menu
+\------------------------------------------------*/
+#findPeople {
+	left: 30%;
+	width: 60pt;
+}
+
+#findPlaces {
+	left: 70%;
+	width: 58pt;
+}
+
+#menuClock {
+	top: 13%;
+	font-size: 24pt;
+}
+
+/*-----------------------------------------------
+|   Emergency screen
+\------------------------------------------------*/
+#callHelp {
+	top: 60%;
+	left: 30%;
+	width: 65pt;
+}
+
+#cancelHelp {
+	top: 60%;
+	left: 70%;
+	width: 65pt;
+}
+
+#emergencyTitle {
+	top: 35%;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+/*-----------------------------------------------
+|   Help Declined screen
+\------------------------------------------------*/
+#instruction {
+	width: 150pt;
+}
+
+/*-----------------------------------------------
+|   Help Accepted screen
+\------------------------------------------------*/
+#helpComingText {
+	top: 30%;
+	font-size: 18pt;
+	text-align: center;
+}
+
+#helpTimer {
+	font-size: 28pt;
+	font-weight: bold;
+}
+
+/*-----------------------------------------------
+|   Foreground emergency timer
+\------------------------------------------------*/
+#foregroundTimer {
+	border-radius: 50%;
+	width: 70pt;
+	height: 35pt;
+	top: 93%;
+	background-color: darkred;
+	border: 1px solid rgb(194, 194, 194);
+}
+
+#foregroundTimeleft {
+	top: 34%;
+	font-size: 15pt;
+}
+
+/*-----------------------------------------------
+|   Find Places menu
+\------------------------------------------------*/
+#container .onscreen {
+	width: 80pt;
+}
+
+#topLeftButton {
+	top: 15.5%;
+	left: 11%;
+}
+
+#topRightButton {
+	top: 15.5%;
+	left: 54%;
+	transform: rotateY(180deg);
+}
+
+#bottomLeftButton {
+	top: 54.5%;
+	left: 11%;
+	transform: rotateX(180deg);
+}
+
+#bottomRightButton {
+	top: 54.5%;
+	left: 54%;
+	transform: rotate(180deg);
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> irave </title>
+		<meta charset="utf-8">
+		<!-- Animation library -->
+		<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+		<!-- Custom Font -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu"> 
+		<link rel="styleSheet" type="text/css" href="css/style.css">
+	</head>
+	<body onload="initVisibility(); initScreenOrder()">
+		<!-- Container with all elements -->
+		<div id="container">
+
+			<!-- Main watch body image -->
+			<img id="watchBody"  class="center" src="images/watch_body_transparent_noButtons.png">
+
+			<!-- Vibrating screen simulation -->
+			<div id="vibratingScreen" class="center screen"></div>
+
+			<!-- Mask wrapper -->
+			<div id=buttonWrapper class="center screen">
+				<!-- Buttons and their respective maps -->
+				<img id="toggleOff" class="button" src="images/buttons/button-toggleOff.png" usemap="#toggleMap">
+				<img id="toggleOn"  class="button" src="images/buttons/button-toggleOn.png"  usemap="#toggleMap">
+				<img id="unlock"    class="button" src="images/buttons/button-unlock.png"    usemap="#unlockMap">
+				<img id="back"      class="button" src="images/buttons/button-back.png"      usemap="#backMap">
+
+					<map name="toggleMap" id="toggleMap">
+						<area alt="emergencyToggle" id="emergencyToggle"
+						shape="poly"
+						coords="0,54,16,27,28,34,14,60"
+						onclick="emergencyModeToggle(); vibration(); swapToggle()" >
+					</map>
+					<map name="unlockMap" id="unlockMap">		
+						<area alt="unlockButton" id="unlockButton"
+						shape="poly"
+						coords="10,4,42,59,47,26,34,9"
+						onclick="lock()" >
+					</map>
+					<map name="backMap" id="backMap">		
+						<area alt="backButton" id="backButton"
+						shape="poly"
+						coords="9,62,43,6,48,35,38,52"
+						onclick="back()" >
+					</map>
+			</div>
+
+			<!-- Wrapper that holds relevant data -->
+			<div id="wrapper" class="center screen" style="overflow: hidden">
+
+				<!-- Emergency screen -->
+				<div id="emergencyScreen" class="screen">
+					<img class="background screen"       src="images/menus/menu-background.png">
+					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#acceptMap">
+					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#declineMap">
+
+					<span id="emergencyTitle" class="text"> Emergency? </span>
+
+						<map name="acceptMap" id="acceptMap">
+							<area alt="emergencyAcceptButton" id="emergencyAcceptButton"
+							shape="circle"
+							coords="45,44,40"
+							onclick="acceptEmergency()" >
+						</map>
+						<map name="declineMap" id="declineMap">
+							<area alt="emergencyDeclineButton" id="emergencyDeclineButton"
+							shape="circle"
+							coords="45,44,40"
+							onclick="declineEmergency()" >
+						</map>
+				</div>
+
+				<!-- Help declined screen, when emergency call is canceled -->
+				<div id="helpDeclinedScreen" class="screen">
+					<img class="background screen"     src="images/menus/menu-background.png">
+					<img id="instruction" class="icon" src="images/icons/icon-untoggle.png">
+				</div>
+
+				<!-- Help accepted screen, when emergency call is successful -->
+				<div id="helpAcceptedScreen" class="screen">
+					<img class="background screen" src="images/menus/menu-background.png">
+					<span id="helpComingText" class="text"> HELP ON THE WAY </span>
+					<span id="helpTimer"      class="text"></span>
+				</div>
+
+				<!-- Foreground emergency timer -->
+				<div id="foregroundTimer" class="icon">
+					<span id="foregroundTimeleft" class="text"> </span>
+				</div>
+
+				<!-- Small clock in all menus -->
+				<div id="menuClock" class="text"></div>
+
+				<!-- Main menu screen -->
+				<div id="mainMenu" class="screen">
+					<img class="screen" src="images/menus/menu-main-round_layout-top_bottom.png" usemap="#mainMenuMap">
+					<img id="findPeople" class="icon" src="images/icons/icon-find_people.png">
+					<img id="findPlaces" class="icon" src="images/icons/icon-find_places.png">
+
+						<map name="mainMenuMap" id="mainMenuMap">
+							<area alt="findPeopleButton" id="findPeopleButton"
+							shape="poly"
+							coords="141,235,141,70,125,66,116,63,109,58,102,52,96,46,81,56,65,70,52,87,42,105,34,135,33,164,39,190,47,208,57,226,70,240,80,249,96,260,104,251,112,246,119,241"
+							onclick="" >
+				
+							<area alt="findPlacesButton" id="findPlacesButton"
+							shape="poly"
+							coords="166,236,166,70,179,67,190,63,199,56,212,46,227,56,242,69,253,83,263,100,270,120,275,144,273,167,268,190,260,210,249,227,238,239,225,250,212,260,201,250,189,242"
+							onclick="goToFindPlacesMenu()" >
+						</map>
+				</div>
+
+				<div id="findPlacesMenu" class="screen">
+					<img class="screen" src="images/menus/menu-background.png">
+					<!<img class="background screen" src="images/menus/menu-main-round_layout-top_bottom.png" style="opacity: 0.5">
+
+					<img id="topLeftButton"     class="onscreen" src="images/buttons/button-place.png" usemap="#topLeftButtonMap">
+					<img id="topRightButton"    class="onscreen" src="images/buttons/button-place.png" usemap="#topLeftButtonMap">
+					<img id="bottomLeftButton"  class="onscreen button" src="images/buttons/button-place.png" usemap="#bottomLeftButtonMap">
+					<img id="bottomRightButton" class="onscreen button" src="images/buttons/button-place.png" usemap="#bottomRightButtonMap">
+
+						<map name="topLeftButtonMap">
+							<area alt="topLeftButton" id="topLeftButton"
+							shape="poly"
+							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
+							onclick="findPlace('wc')" >
+						</map>
+
+						<map name="topRightButtonMap">
+							<area alt="topRightButton" id="topRightButton"
+							shape="poly"
+							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
+							onclick="findPlace('food')" >
+						</map>
+
+						<map name="bottomLeftButtonMap">
+							<area alt="bottomLeftButton" id="bottomLeftButton"
+							shape="poly"
+							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
+							onclick="findPlace('food')" >
+						</map>
+
+						<map name="topLeftButtonMap">
+							<area alt="topLeftButton" id="topLeftButton"
+							shape="poly"
+							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
+							onclick="findPlace('charging')" >
+						</map>
+
+					<div id="fp_page1" class="screen">
+					</div>
+				</div>
+
+				<!-- Starting (welcome) screen -->
+				<div id=startScreen class="screen" style="background-image: url(images/blue.jpg)">
+					<span id="clock" class="text"></span>
+				</div>
+
+				<!-- Lock screen, when watch is in screen disabled state -->
+				<div id="lockScreen"  class="screen" onclick="unlock()"></div>
+
+			</div>
+
+		</div>
+
+	</body>
+	<script src="js/script.js"></script>
+</html>
