@@ -4,7 +4,7 @@
 \------------------------------------------------*/
 #container .center, .screen, .icon, .button, .onscreen, .text {
 	position: absolute;
-	border: 1px solid purple;
+	/* border: 1px solid purple; */
 }
 
 #container .center, .icon, .button, .text {
@@ -182,25 +182,80 @@
 	width: 80pt;
 }
 
-#topLeftButton {
+#topLeftButton_page1, #topLeftButton_page2 {
 	top: 15.5%;
 	left: 11%;
 }
 
-#topRightButton {
+#topRightButton_page1, #topRightButton_page2 {
 	top: 15.5%;
 	left: 54%;
 	transform: rotateY(180deg);
 }
 
-#bottomLeftButton {
+#bottomLeftButton_page1, #bottomLeftButton_page2 {
 	top: 54.5%;
 	left: 11%;
 	transform: rotateX(180deg);
 }
 
-#bottomRightButton {
+#bottomRightButton_page1 {
 	top: 54.5%;
 	left: 54%;
 	transform: rotate(180deg);
+}
+
+#wcIcon {
+	top: 35%;
+	left: 32%;
+	width: 54pt;
+}
+
+#foodIcon, #infoIcon {
+	top: 33%;
+	left: 70%;
+	width: 33pt;
+}
+
+#drinkIcon, #exitIcon {
+	top: 67%;
+	left: 32%;
+	width: 33pt;
+}
+
+#campingIcon {
+	top: 66%;
+	left: 68%;
+	width: 47pt;
+}
+
+#chargingIcon {
+	top: 32%;
+	left: 35%;
+	width: 35pt;
+}
+
+#infoIcon {
+	top: 33%;
+	left: 68%;
+	width: 46pt;
+}
+
+/*-----------------------------------------------
+|   Directions Screen
+\------------------------------------------------*/
+#arrow {
+	top: 25%;
+	width: 50pt;
+	transform-origin: 50% 120%;
+	transform: translateX(-50%) translateY(-50%) rotate(0deg);
+}
+
+#distanceCircle {
+	background-color: rgb(20, 106, 235);
+	width: 80pt;
+	height: 80pt;
+	border: 1px solid lightgrey;
+	border-radius: 50%;
+	background-size: 80pt 80pt;
 }

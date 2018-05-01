@@ -116,40 +116,62 @@
 					<img class="screen" src="images/menus/menu-background.png">
 					<!<img class="background screen" src="images/menus/menu-main-round_layout-top_bottom.png" style="opacity: 0.5">
 
-					<img id="topLeftButton"     class="onscreen" src="images/buttons/button-place.png" usemap="#topLeftButtonMap">
-					<img id="topRightButton"    class="onscreen" src="images/buttons/button-place.png" usemap="#topLeftButtonMap">
-					<img id="bottomLeftButton"  class="onscreen button" src="images/buttons/button-place.png" usemap="#bottomLeftButtonMap">
-					<img id="bottomRightButton" class="onscreen button" src="images/buttons/button-place.png" usemap="#bottomRightButtonMap">
+					<div id="findPlacesMenu_page1" class="screen">
+						<img id="topLeftButton_page1"     class="onscreen" src="images/buttons/button-place.png" usemap="#topLeftButtonMap">
+						<img id="topRightButton_page1"    class="onscreen" src="images/buttons/button-place.png" usemap="#topRightButtonMap">
+						<img id="bottomLeftButton_page1"  class="onscreen" src="images/buttons/button-place.png" usemap="#bottomLeftButtonMap">
+						<img id="bottomRightButton_page1" class="onscreen" src="images/buttons/button-place.png" usemap="#bottomRightButtonMap">
+
+						<img id="wcIcon"      class="icon" src="images/icons/icon-wc.png">
+						<img id="foodIcon"    class="icon" src="images/icons/icon-food.png">
+						<img id="drinkIcon"   class="icon" src="images/icons/icon-drinks.png">
+						<img id="campingIcon" class="icon" src="images/icons/icon-camping.png">
+					</div>
+
+					<div id="findPlacesMenu_page2" class="screen">
+						<img id="topLeftButton_page2"     class="onscreen" src="images/buttons/button-place.png" usemap="#topLeftButtonMap">
+						<img id="topRightButton_page2"    class="onscreen" src="images/buttons/button-place.png" usemap="#topRightButtonMap">
+						<img id="bottomLeftButton_page2"  class="onscreen" src="images/buttons/button-place.png" usemap="#bottomLeftButtonMap">
+
+						<img id="chargingIcon" class="icon" src="images/icons/icon-charging.png">
+						<img id="infoIcon"     class="icon" src="images/icons/icon-info.png">
+						<img id="exitIcon"     class="icon" src="images/icons/icon-exit3.png">
+					</div>
 
 						<map name="topLeftButtonMap">
 							<area alt="topLeftButton" id="topLeftButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="findPlace('wc')" >
+							onclick="goToDirectionsScreen()" >
 						</map>
 
 						<map name="topRightButtonMap">
 							<area alt="topRightButton" id="topRightButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="findPlace('food')" >
+							onclick="goToDirectionsScreen()" >
 						</map>
 
 						<map name="bottomLeftButtonMap">
 							<area alt="bottomLeftButton" id="bottomLeftButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="findPlace('food')" >
+							onclick="goToDirectionsScreen()" >
 						</map>
 
-						<map name="topLeftButtonMap">
+						<map name="bottomRightButtonMap">
 							<area alt="topLeftButton" id="topLeftButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="findPlace('charging')" >
+							onclick="goToDirectionsScreen()" >
 						</map>
 
-					<div id="fp_page1" class="screen">
+				</div>
+
+				<div id="directionsScreen" class="screen" style="background-image: url(images/menus/menu-background.png)">
+					<img id="arrow" class="icon" src="images/icons/icon-arrow.png">
+					<div id="distanceCircle" class="icon">
+						<span id="distanceDisplay" class="text"></span>
 					</div>
 				</div>
 

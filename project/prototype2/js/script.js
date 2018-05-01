@@ -18,12 +18,17 @@ var helpComing      = document.getElementById("helpAcceptedScreen");
 var helpDeclined    = document.getElementById("helpDeclinedScreen");
 var ambulance       = document.getElementById("foregroundTimer");
 var vibratingScreen = document.getElementById("vibratingScreen");
-var findPlacesMenu  = document.getElementById("findPlacesMenu");
+
+var findPlacesMenu   = document.getElementById("findPlacesMenu");
+var findPlaces_page2 = document.getElementById("findPlacesMenu_page2");
+var findPlaces_page1 = document.getElementById("findPlacesMenu_page1");
+
+var directionsScreen = document.getElementById("directionsScreen");
 
 var currentScreen = lockScreen;
 var backgroundScreen; /*used when emegency mode is activated*/
 
-var clock = document.getElementById("clock");
+var clock     = document.getElementById("clock");
 var menuClock = document.getElementById("menuClock");
 
 /* Buttons ----------------------------------------------------------*/
@@ -132,6 +137,7 @@ function resetProperties(screen) {
 	screen.style.top     = "0pt";
 	screen.style.left    = "0pt";
 	screen.style.opacity = 1;
+	screen.style.pointerEvents = "auto";
 }
 
 /* Generic icon and image map swapper */
@@ -161,13 +167,20 @@ function swapIcon(button, oldIcon, newIcon, areaId) {
 function initVisibility() {
 
 	// Hide uneeded screens at the start
-	/* hide(startScreen); */
+
+	//hide(startScreen);
 	hide(mainMenu);
+
+	//hide(findPlacesMenu)
+	hide(findPlaces_page1);
+	hide(findPlaces_page2);
+
+	hide(directionsScreen);
+
 	hide(emergency);
 	hide(helpComing);
 	hide(helpDeclined);
 	hide(ambulance);
-	hide(findPlacesMenu);
 
 	// Hide uneeded buttons at the start
 	hide(toggleOn);
@@ -184,17 +197,28 @@ function initVisibility() {
 }
 
 function initScreenOrder() {
+	// Initial previous screens
 	setPrev(lockScreen,   lockScreen);
 	setPrev(startScreen,  startScreen);
 	setPrev(mainMenu,     mainMenu);
+	
+	// Emergency previous screens
 	setPrev(emergency,    helpDeclined);
 	setPrev(helpComing,   helpDeclined);
 	setPrev(helpDeclined, helpDeclined);
-	setPrev(findPlacesMenu, mainMenu);
 
+	setPrev(findPlacesMenu, mainMenu);
+	setPrev(findPlaces_page1, mainMenu);
+	setPrev(findPlaces_page2, mainMenu);
+
+	// Initial next screens
 	setNext(lockScreen,  startScreen);
 	setNext(startScreen, mainMenu);
 	setNext(mainMenu,    mainMenu);
+
+
+	setNext(findPlaces_page1, findPlaces_page2);
+	setNext(findPlaces_page2, findPlaces_page1);
 }
 /* -------------------------------------------------------------------------------------------*/
 
@@ -242,6 +266,8 @@ function unlock() {
 
 
 function lock() {
+	if (emergencyCalled)
+		swap(currentScreen, getPrev(currentScreen));
 	if (emergencyModeOn)
 		return;
 	if (currentScreen != lockScreen) {
@@ -260,7 +286,11 @@ function back() {
 
 
 function goToFindPlacesMenu() {
-	swap(mainMenu, findPlacesMenu);
+	swap(mainMenu, findPlaces_page1);
+}
+
+function goToDirectionsScreen() {
+	swap(currentScreen, directionsScreen);
 }
 /*--------------------------------------------------------------------
   emergencyModeToggle() - toggles emergency mode when using toggle
@@ -363,11 +393,17 @@ function vibration() {
 }
 
 /*--------------- Hammer.js library variables ----------------------*/
-var mc = new Hammer(startScreen);
-mc.get('pan').set({direction: Hammer.DIRECTION_ALL});
+var startScreenAnim      = new Hammer(startScreen);
+var findPlacesAnim_page1 = new Hammer(findPlaces_page1);
+var findPlacesAnim_page2 = new Hammer(findPlaces_page2);
+
+startScreenAnim.get('pan').set({direction: Hammer.DIRECTION_ALL});
+findPlacesAnim_page1.get('pan').set({direction: Hammer.DIRECTION_ALL});
+findPlacesAnim_page2.get('pan').set({direction: Hammer.DIRECTION_ALL});
 /*-------------------------------------------------------------------*/
 
-mc.on("panup panleft panright pandown tap press", function(ev){
+startScreenAnim.on("panup panleft panright pandown", function(ev){
+	getNext(startScreen).style.pointerEvents = "none";
 	show(getNext(startScreen));
 	if (ev.type == "panup") {
 		clearInterval(movementTimer);
@@ -387,6 +423,24 @@ mc.on("panup panleft panright pandown tap press", function(ev){
 	}
 })
 
+findPlacesAnim_page1.on("panleft", function(ev){
+	getNext(findPlaces_page1).style.left = "-100%";
+	show(getNext(findPlaces_page1));
+	if (ev.type == "panleft") {
+		clearInterval(movementTimer);
+		drag(dragLeft, 1, findPlaces_page1, getNext(findPlaces_page1), -100);
+	}
+})
+
+findPlacesAnim_page2.on("panright", function(ev){
+	getNext(findPlaces_page2).style.left = "100%";
+	show(getNext(findPlaces_page2));
+	if (ev.type == "panright") {
+		clearInterval(movementTimer);
+		drag(dragRight, 1, findPlaces_page2, getNext(findPlaces_page2), 100);
+	}
+})
+
 /*-------------------------------------------------------------------*/
 var initTop    = 0;
 var initLeft   = 0;
@@ -400,7 +454,7 @@ var y = initTop;
 var x = initLeft;
 
 var opacity      = 1;
-var opacityRate  = 0.02;
+var opacityRate  = 0.01;
 var timeInterval = 1;
 
 var movementTimer;
@@ -411,6 +465,9 @@ function move(direction, interval, screen, bound) {
 	movementTimer = setInterval(direction, interval, screen, bound);
 }
 
+function drag(direction, interval, screen1, screen2, bound) {
+	movementTimer = setInterval(direction, interval, screen1, screen2, bound);
+}
 
 function up(screen, bound) {
 	y--;
@@ -467,10 +524,37 @@ function right(screen, bound) {
 	}
 }
 
+function dragLeft(screen1, screen2, bound) {
+	x--;
+	if (bound >= x) {resetScreen(screen2);
+		clearInterval(movementTimer);
+		resetScreen(screen2);
+		resetScreen(screen1);
+	}
+	else {
+		screen1.style.left = x + "%";
+		screen2.style.left = (100 + x) + "%";
+	}
+}
+
+function dragRight(screen1, screen2, bound) {
+	x++;
+	if (bound <= x) {
+		clearInterval(movementTimer);
+		resetScreen(screen2);
+		resetScreen(screen1);
+	}
+	else {
+		screen1.style.left = x + "%";
+		screen2.style.left = (-100 + x) + "%";
+	}
+}
+
 /* Generic reset screen function */
 function resetScreen(screen) {
 	swap(screen, getNext(screen));
 	resetProperties(screen);
+	resetProperties(getNext(screen));
 	x = initLeft;
 	y = initTop;
 	opacity = 1;
