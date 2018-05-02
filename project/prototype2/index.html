@@ -19,6 +19,12 @@
 			<!-- Vibrating screen simulation -->
 			<div id="vibratingScreen" class="center screen"></div>
 
+			<div id="movementButtons" class="center screen">
+				<span id="goForward"  class="text button" onclick="forward()"> F </span>
+				<span id="goLeft"     class="text button" onclick="leftRotation()">  L </span>
+				<span id="goRight"    class="text button" onclick="rightRotation()"> R </span>
+			</div>
+
 			<!-- Mask wrapper -->
 			<div id=buttonWrapper class="center screen">
 				<!-- Buttons and their respective maps -->
@@ -33,17 +39,17 @@
 						coords="0,54,16,27,28,34,14,60"
 						onclick="emergencyModeToggle(); vibration(); swapToggle()" >
 					</map>
-					<map name="unlockMap" id="unlockMap">		
+					<map name="unlockMap" id="unlockMap">
 						<area alt="unlockButton" id="unlockButton"
 						shape="poly"
 						coords="10,4,42,59,47,26,34,9"
 						onclick="lock()" >
 					</map>
-					<map name="backMap" id="backMap">		
+					<map name="backMap" id="backMap">
 						<area alt="backButton" id="backButton"
 						shape="poly"
 						coords="9,62,43,6,48,35,38,52"
-						onclick="back()" >
+						onclick="back(); showClock()" >
 					</map>
 			</div>
 
@@ -110,8 +116,15 @@
 							coords="166,236,166,70,179,67,190,63,199,56,212,46,227,56,242,69,253,83,263,100,270,120,275,144,273,167,268,190,260,210,249,227,238,239,225,250,212,260,201,250,189,242"
 							onclick="goToFindPlacesMenu()" >
 						</map>
+
+					<table id="OrbTable">
+						<tr>
+							<td id="orb" class="orb icon"></td>
+						</tr>
+					</table>
 				</div>
 
+				<!-- Find places menu -->
 				<div id="findPlacesMenu" class="screen">
 					<img class="screen" src="images/menus/menu-background.png">
 					<!<img class="background screen" src="images/menus/menu-main-round_layout-top_bottom.png" style="opacity: 0.5">
@@ -142,37 +155,82 @@
 							<area alt="topLeftButton" id="topLeftButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="goToDirectionsScreen()" >
+							onclick="goToCandidateList('wc','54pt','Restroom')" >
 						</map>
 
 						<map name="topRightButtonMap">
 							<area alt="topRightButton" id="topRightButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="goToDirectionsScreen()" >
+							onclick="goToCandidateList('food','33pt','Food court')" >
 						</map>
 
 						<map name="bottomLeftButtonMap">
 							<area alt="bottomLeftButton" id="bottomLeftButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="goToDirectionsScreen()" >
+							onclick="goToCandidateList('drinks','33pt','Drinks / Bar')" >
 						</map>
 
 						<map name="bottomRightButtonMap">
-							<area alt="topLeftButton" id="topLeftButton"
+							<area alt="bottomRightButton" id="bottomRightButton"
 							shape="poly"
 							coords="1,92,5,74,11,58,17,45,29,28,47,11,64,0,79,14,95,21,108,24,108,93"
-							onclick="goToDirectionsScreen()" >
+							onclick="goToCandidateList('camping','47pt','Camping site')" >
 						</map>
 
+					<table id="OrbTable">
+						<tr>
+							<td id="orb1" class="orb icon"></td>
+							<td id="orb2" class="orb icon"></td>
+						</tr>
+					</table>
 				</div>
 
+				<!-- Find place listing -->
+				<div id="findPlacesList" class="screen" style="background-image: url(images/menus/menu-background.png)">
+					<img id="titleIcon" class="icon" src="">
+					<img id="directionsPrompt" class="button" src="images/icons/icon-directions_font.png" onclick="goToDirectionsScreen()">
+					<table id="candidateList" class="text">
+						<tr>
+							<th id="placeTitle"></th>
+						</tr>
+						<tr>
+							<td id="listDistance"></td>
+						</tr>
+						<tr>
+							<td id="listOccupancy"></td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- Generic directions screen (GPS) -->
 				<div id="directionsScreen" class="screen" style="background-image: url(images/menus/menu-background.png)">
 					<img id="arrow" class="icon" src="images/icons/icon-arrow.png">
-					<div id="distanceCircle" class="icon">
+					<div id="distanceCircle" class="icon" style="background-image: url(images/blue.jpg)">
 						<span id="distanceDisplay" class="text"></span>
 					</div>
+				</div>
+
+				<!-- Generic cancel confirmation screen -->
+				<div id="cancelConfirmScreen" class="screen" style="background-image: url(images/menus/menu-background.png)">
+					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#cancelMap">
+					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#notCancelMap">
+
+					<span id="cancelConfirmText" class="text"> Going back will cancel current action. Are you sure? </span>
+
+						<map name="cancelMap">
+							<area
+							shape="circle"
+							coords="45,44,40"
+							onclick="endReached(); root()" >
+						</map>
+						<map name="notCancelMap">
+							<area
+							shape="circle"
+							coords="45,44,40"
+							onclick="back()" >
+						</map>
 				</div>
 
 				<!-- Starting (welcome) screen -->
