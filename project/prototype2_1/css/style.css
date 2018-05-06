@@ -1,0 +1,323 @@
+
+/*-----------------------------------------------
+|   Multi selector manipulation
+\------------------------------------------------*/
+#container .center, .screen, .icon, .button, .onscreen, .text, .onscreen2, .background {
+	position: absolute;
+	/* border: 1px solid purple; */
+}
+
+#container .center, .icon, .button, .text {
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+}
+
+#container .screen {
+	width: 250pt;
+	height: 250pt;
+	border-radius: 50%;
+	background-color: #204a87;
+}
+
+#container .seethrough {
+	opacity: 0.95;
+}
+
+#container .background {
+	width: 250pt;
+	height: 250pt;
+	border-radius: 50%;
+}
+
+#container .onscreen2 {
+	border-radius: 50%;
+	background-color: #729fcf;
+	width: 90pt;
+	height: 90pt;
+}
+
+#container .button {
+	z-index: 1;
+}
+
+#container .icon {
+	pointer-events: none;
+}
+
+#container .text {
+	color: #eeeeec;
+	font-family: 'Source Sans Pro', sans-serif;
+	text-align: center;
+}
+
+/*-----------------------------------------------
+|   Watch Body
+\------------------------------------------------*/
+#watchBody {
+	width: 252pt;
+	height: auto;
+	z-index: 1;
+	pointer-events: none;
+}
+
+/*-----------------------------------------------
+|   Button Masks
+\------------------------------------------------*/
+#toggleOff, #toggleOn {
+	top: 26%;
+	left: 7%;
+	width: 45pt;
+}
+
+#unlock {
+	top: 25%;
+	left: 92%;
+	width: 35pt;
+}
+
+#back {
+	top: 75%;
+	left: 92%;
+	width: 35pt;
+}
+
+/*-----------------------------------------------
+|   Lock screen
+\------------------------------------------------*/
+#lockScreen.screen {
+	background-color: black;
+}
+
+/*-----------------------------------------------
+|   Welcome screen (start screen)
+\------------------------------------------------*/
+#clock {
+	top: 49%;
+}
+
+#time{
+	font-size: 55pt;
+	font-weight: bold;
+}
+
+#date{
+	font-size: 21pt;
+}
+
+/*-----------------------------------------------
+|   Main menu
+\------------------------------------------------*/
+#findPeopleButton {
+	top: 60%;
+	left: 30%;
+}
+
+#findPeople {
+	width: 50pt;
+}
+
+#findPlacesButton {
+	top: 60%;
+	left: 70%;
+}
+
+#findPlaces {
+	width: 49pt;
+}
+
+#playlistButton.onscreen2 {
+	width: 60pt;
+	height: 60pt;
+	top: 33%;
+}
+
+#menuClock {
+	top: 14%;
+	font-size: 24pt;
+}
+
+#mainMenu .orb {
+	background-color: #eeeeec;
+	width: 4pt;
+	height: 4pt;
+	border-radius: 50%;
+	top: 89%;
+	z-index: 0;
+}
+
+/*-----------------------------------------------
+|   Emergency screen
+\------------------------------------------------*/
+#callHelp {
+	top: 60%;
+	left: 30%;
+	width: 65pt;
+}
+
+#cancelHelp {
+	top: 60%;
+	left: 70%;
+	width: 65pt;
+}
+
+#emergencyTitle {
+	top: 35%;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+/*-----------------------------------------------
+|   Help Declined screen
+\------------------------------------------------*/
+#instruction {
+	width: 150pt;
+}
+
+/*-----------------------------------------------
+|   Help Accepted screen
+\------------------------------------------------*/
+#helpComingText {
+	top: 30%;
+	font-size: 18pt;
+}
+
+#helpTimer {
+	font-size: 28pt;
+	font-weight: bold;
+}
+
+/*-----------------------------------------------
+|   Foreground emergency timer
+\------------------------------------------------*/
+
+#foregroundTimeleft.text {
+	top: 84%;
+	color: rgb(255, 145, 145);
+	font-weight: bold;
+	font-size: 15pt;
+}
+
+/*-----------------------------------------------
+|   Find Places menu
+\------------------------------------------------*/
+#container .onscreen {
+	width: 70pt;
+	height: 70pt;
+}
+
+#container .left   { left: 34%; }
+#container .right  { left: 67%; }
+#container .top    { top: 34%;  }
+#container .bottom { top: 67%;  }
+
+#wcIcon       { width: 53pt; }
+
+#foodIcon     { width: 33pt; }
+
+#drinkIcon    { width: 33pt; }
+
+#exitIcon     { width: 44pt; }
+
+#campingIcon  { width: 47pt; }
+
+#chargingIcon { width: 35pt; }
+
+#infoIcon     { width: 46pt; }
+
+#findPlacesMenu .orb {
+	background-color: #729fcf;
+	width: 4pt;
+	height: 4pt;
+	border-radius: 50%;
+	top: 89%;
+	z-index: 0;
+}
+
+#orb1 { left: 48%; }
+
+#orb2 { left: 52%; }
+
+/*-----------------------------------------------
+|   Directions Screen
+\------------------------------------------------*/
+#arrow {
+	top: 25.5%;
+	width: 40pt;
+	transform-origin: 50% 300%;
+	transform: translateX(-50%) translateY(-50%) rotate(0deg);
+}
+
+#distanceCircle {
+	width: 80pt;
+	height: 80pt;
+	border-radius: 50%;
+	background-color: #729fcf;
+}
+
+#distanceDisplay {
+	width: 80pt;
+	font-size: 28pt;
+}
+
+/*-----------------------------------------------
+|   Cancel confirmation screen
+\------------------------------------------------*/
+#cancelConfirmText {
+	top: 36%;
+	font-size: 14pt;
+}
+
+/*-----------------------------------------------
+|   Movement buttons
+\------------------------------------------------*/
+#movementButtons .button {
+	border-radius: 50%;
+	border: 1px solid black;
+	background-color: purple;
+	width: 40pt;
+	height: 40pt;
+	font-size: 28pt;
+}
+
+#goForward {
+	top: -30%;
+}
+
+#goLeft {
+	top: -15%;
+	left: 25%;
+}
+
+#goRight {
+	top: -15%;
+	left: 75%;
+}
+
+/*-----------------------------------------------
+|   Find places list
+\------------------------------------------------*/
+#findPlacesList.screen {
+	background-color: #3465a4;
+}
+
+#candidateList.text {
+	width: 65%;
+	height: 30%;
+	top: 46%;
+	font-size: 16pt;
+}
+
+#titleIcon {
+	top: 20%;
+}
+
+#placeTitle {
+	font-size: 18pt;
+	/* color: #729fcf; */
+}
+
+#directionsPrompt {
+	top: 72%;
+	width: 100pt;
+}
