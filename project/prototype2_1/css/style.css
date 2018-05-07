@@ -2,53 +2,81 @@
 /*-----------------------------------------------
 |   Multi selector manipulation
 \------------------------------------------------*/
-#container .center, .screen, .icon, .button, .onscreen, .text, .onscreen2, .background {
+.center, .screen, .foreground, .icon, .button, .onscreen, .text {
 	position: absolute;
 	/* border: 1px solid purple; */
 }
 
-#container .center, .icon, .button, .text {
+.center, .icon, .button, .text {
 	top: 50%;
 	left: 50%;
 	transform: translateX(-50%) translateY(-50%);
 }
 
-#container .screen {
+.screen {
 	width: 250pt;
 	height: 250pt;
 	border-radius: 50%;
 	background-color: #204a87;
 }
 
-#container .seethrough {
+.seethrough {
 	opacity: 0.95;
 }
 
-#container .background {
+.foreground {
 	width: 250pt;
 	height: 250pt;
 	border-radius: 50%;
 }
 
-#container .onscreen2 {
+.onscreen {
 	border-radius: 50%;
 	background-color: #729fcf;
+}
+
+.button {
+	z-index: 1;
+}
+
+.icon {
+	pointer-events: none;
+}
+
+.text {
+	color: #eeeeec;
+	font-family: 'Source Sans Pro', sans-serif;
+	text-align: center;
+}
+
+.left   { left: 34%; }
+.right  { left: 67%; }
+.top    { top:  34%; }
+.bottom { top:  67%; }
+
+.big {
 	width: 90pt;
 	height: 90pt;
 }
 
-#container .button {
-	z-index: 1;
+.small {
+	width: 70pt;
+	height: 70pt;
 }
 
-#container .icon {
-	pointer-events: none;
+.orb {
+	width: 4pt;
+	height: 4pt;
+	border-radius: 50%;
+	top: 89%;
 }
 
-#container .text {
-	color: #eeeeec;
-	font-family: 'Source Sans Pro', sans-serif;
-	text-align: center;
+#mainMenu .orb {
+	background-color: #eeeeec;
+}
+
+#findPlacesWrapper .orb {
+	background-color: #729fcf;
 }
 
 /*-----------------------------------------------
@@ -62,7 +90,7 @@
 }
 
 /*-----------------------------------------------
-|   Button Masks
+|   Buttons
 \------------------------------------------------*/
 #toggleOff, #toggleOn {
 	top: 26%;
@@ -85,7 +113,7 @@
 /*-----------------------------------------------
 |   Lock screen
 \------------------------------------------------*/
-#lockScreen.screen {
+#lockScreen {
 	background-color: black;
 }
 
@@ -126,7 +154,7 @@
 	width: 49pt;
 }
 
-#playlistButton.onscreen2 {
+#playlistButton {
 	width: 60pt;
 	height: 60pt;
 	top: 33%;
@@ -135,15 +163,6 @@
 #menuClock {
 	top: 14%;
 	font-size: 24pt;
-}
-
-#mainMenu .orb {
-	background-color: #eeeeec;
-	width: 4pt;
-	height: 4pt;
-	border-radius: 50%;
-	top: 89%;
-	z-index: 0;
 }
 
 /*-----------------------------------------------
@@ -191,7 +210,7 @@
 |   Foreground emergency timer
 \------------------------------------------------*/
 
-#foregroundTimeleft.text {
+#foregroundTimeleft {
 	top: 84%;
 	color: rgb(255, 145, 145);
 	font-weight: bold;
@@ -201,16 +220,6 @@
 /*-----------------------------------------------
 |   Find Places menu
 \------------------------------------------------*/
-#container .onscreen {
-	width: 70pt;
-	height: 70pt;
-}
-
-#container .left   { left: 34%; }
-#container .right  { left: 67%; }
-#container .top    { top: 34%;  }
-#container .bottom { top: 67%;  }
-
 #wcIcon       { width: 53pt; }
 
 #foodIcon     { width: 33pt; }
@@ -225,15 +234,6 @@
 
 #infoIcon     { width: 46pt; }
 
-#findPlacesMenu .orb {
-	background-color: #729fcf;
-	width: 4pt;
-	height: 4pt;
-	border-radius: 50%;
-	top: 89%;
-	z-index: 0;
-}
-
 #orb1 { left: 48%; }
 
 #orb2 { left: 52%; }
@@ -242,7 +242,7 @@
 |   Directions Screen
 \------------------------------------------------*/
 #arrow {
-	top: 25.5%;
+	top: 28%;
 	width: 40pt;
 	transform-origin: 50% 300%;
 	transform: translateX(-50%) translateY(-50%) rotate(0deg);
@@ -255,7 +255,7 @@
 	background-color: #729fcf;
 }
 
-#distanceDisplay {
+#distanceDisplay, #endReached {
 	width: 80pt;
 	font-size: 28pt;
 }
@@ -297,11 +297,7 @@
 /*-----------------------------------------------
 |   Find places list
 \------------------------------------------------*/
-#findPlacesList.screen {
-	background-color: #3465a4;
-}
-
-#candidateList.text {
+#candidateList {
 	width: 65%;
 	height: 30%;
 	top: 46%;
@@ -314,7 +310,7 @@
 
 #placeTitle {
 	font-size: 18pt;
-	/* color: #729fcf; */
+	color: #729fcf;
 }
 
 #directionsPrompt {

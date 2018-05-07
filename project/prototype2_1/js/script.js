@@ -43,13 +43,15 @@ var ambulance       = document.getElementById("foregroundTimeleft");
 var vibratingScreen = document.getElementById("vibratingScreen");
 
 /* Find places displays ---------------------------------------------*/
-var findPlacesMenu   = document.getElementById("findPlacesMenu"); /* background & orbs */
-var findPlaces_page1 = document.getElementById("findPlacesMenu_page1");
-var findPlaces_page2 = document.getElementById("findPlacesMenu_page2");
-var findPlacesList   = document.getElementById("findPlacesList");
+var findPlacesWrapper = document.getElementById("findPlacesWrapper"); /* background & orbs */
+var findPlaces_page1  = document.getElementById("findPlacesMenu_page1");
+var findPlaces_page2  = document.getElementById("findPlacesMenu_page2");
+var findPlacesList    = document.getElementById("findPlacesList");
 
 /* GPS related displays ---------------------------------------------*/
-var directionsScreen    = document.getElementById("directionsScreen");
+var directionsWrapper   = document.getElementById("directionsWrapper");
+var directions_start    = document.getElementById("directionsScreen_start");
+var directions_end      = document.getElementById("directionsScreen_end");
 var arrow               = document.getElementById("arrow");
 var distanceDisplay     = document.getElementById("distanceDisplay");
 var cancelConfirmScreen = document.getElementById("cancelConfirmScreen");
@@ -108,7 +110,7 @@ var shadowRed         = "0pt 0pt 50pt 0pt red";
   hideEmergency(screen, bg) - swaps 'screen' with 'bg' and sets mode
   showEmergency(screen, bg) - shows 'screen' over 'bg' and sets mode
 
-  resetProperties(screen) - resets position and opacity of 'screen'
+  resetScreenProperties(screen) - resets position and opacity of 'screen'
   resetScreen(screen)     - resets 
 
   swapIcon(button, oldIcon, newIcon, areaId) -
@@ -169,30 +171,44 @@ function showEmergency(screen, bg) {
 }
 
 function moveOutOfBounds(side, screen) {
-	if (side === "left")
-		screen.style.left = "-100%";
-	else if (side === "right")
-		screen.style.left = "100%";
-	else
-		console.error("moveOutOfBounds: invalid parameters", [side, screen]);
+	switch(side) {
+		case "left":
+			screen.style.left = "-100%";
+			break;
+		case "right":
+			screen.style.left = "100%";
+			break;
+		case "top":
+			screen.style.top  = "100%";
+			break;
+		case "bottom":
+			screen.style.top  = "-100%";
+			break;
+		default:
+			console.error("moveOutOfBounds: invalid parameters", [side, screen]);
+	}
 }
 
 /* Generic reset properties function */
-function resetProperties(screen) {
+function resetScreenProperties(screen) {
 	screen.style.top     = "0pt";
 	screen.style.left    = "0pt";
 	screen.style.opacity = 1;
 	screen.style.pointerEvents = "auto";
 }
 
+function resetMovementProperties(props, init_top, init_left, opacity) {
+	if (opacity !== undefined)
+		props.opacity = opacity;
+	props.top     = init_top;
+	props.left    = init_left;
+}
+
 /* Generic reset screen function */
 function resetScreen(screen) {
 	swap(screen, getNext(screen));
-	resetProperties(screen);
-	resetProperties(getNext(screen));
-	x = initLeft;
-	y = initTop;
-	opacity = 1;
+	resetScreenProperties(screen);
+	resetScreenProperties(getNext(screen));
 }
 
 /* Generic icon and image map swapper */
@@ -224,20 +240,22 @@ function initVisibility() {
 	//hide(startScreen); //Commenting hides occasional pop up when unlocking screen
 	hide(mainMenu);
 
-	/* Find places screens ------------------------------------------------*/
-	//hide(findPlacesMenu) // hides background, don't hide
-	hide(findPlaces_page1);
-	hide(findPlaces_page2);
-	hide(findPlacesList);
-
 	/* Emergency related screens ------------------------------------------*/
 	hide(emergency);
 	hide(helpComing);
 	hide(helpDeclined);
 	hide(ambulance);
 
+	/* Find places screens ------------------------------------------------*/
+	//hide(findPlacesWrapper); // hides orbs, don't hide
+	hide(findPlaces_page1);
+	hide(findPlaces_page2);
+	hide(findPlacesList);
+
 	/* GPS related screens ------------------------------------------------*/
-	hide(directionsScreen);
+	//hide(directionsWrapper); // in general, don't hide
+	hide(directions_start);
+	hide(directions_end);
 	hide(cancelConfirmScreen);
 	
 	/* Buttons ------------------------------------------------------------*/
@@ -245,14 +263,16 @@ function initVisibility() {
 	hide(movementButtons);
 
 	/* Set visibility z-indexes */
-	zIndex(ambulance,    4);
-	zIndex(helpComing,   3);
-	zIndex(helpDeclined, 3);
-	zIndex(emergency,    3);
-	zIndex(lockScreen,   2);
-	zIndex(startScreen,  2);
-	zIndex(menuClock,    2);
-	zIndex(mainMenu,     1);
+	zIndex(ambulance,    10);
+	zIndex(helpComing,   9);
+	zIndex(helpDeclined, 9);
+	zIndex(emergency,    9);
+	zIndex(cancelConfirmScreen, 9);
+	zIndex(findPlacesList, 8);
+	zIndex(lockScreen,     2);
+	zIndex(startScreen,    2);
+	zIndex(menuClock,      2);
+	zIndex(mainMenu,       1);
 }
 
 function initScreenOrder() {
@@ -270,7 +290,6 @@ function initScreenOrder() {
 	setPrev(helpDeclined, helpDeclined);
 
 	/* Find Places menu ---------------------------------------------------*/
-	setPrev(findPlacesMenu,   mainMenu);
 	setPrev(findPlaces_page1, mainMenu);
 	setPrev(findPlaces_page2, mainMenu);
 	setPrev(findPlacesList,   findPlaces_page1);
@@ -278,9 +297,11 @@ function initScreenOrder() {
 	setNext(findPlaces_page2, findPlaces_page1);
 
 	/* Directions screens -------------------------------------------------*/
-	setPrev(directionsScreen,    cancelConfirmScreen);
-	setPrev(cancelConfirmScreen, directionsScreen);
-	setRoot(directionsScreen,    mainMenu);
+	setPrev(directions_start,    cancelConfirmScreen);
+	setPrev(directions_end,      cancelConfirmScreen);
+	setPrev(cancelConfirmScreen, directions_start);
+	setRoot(directions_start,    mainMenu);
+	setRoot(directions_end,      mainMenu);
 	setRoot(cancelConfirmScreen, mainMenu);
 }
 /* -------------------------------------------------------------------------------------------*/
@@ -329,8 +350,6 @@ function unlock() {
 }
 
 function lock() {
-	if (emergencyCalled)
-		swap(currentScreen, getPrev(currentScreen));
 	if (emergencyModeOn)
 		return;
 	if (currentScreen != lockScreen) {
@@ -389,22 +408,21 @@ function goToFindPlacesMenu() {
 function goToCandidateList(cand, size, title) {
 	if (cand === "")
 		return;
-	distance = Math.round(Math.random()*50) + 10;
+	distance = Math.round(Math.random()*1) + 10;
 	step     = 2;
 	document.getElementById("titleIcon").src           = "images/icons/icon-" + cand + "-white.png";
 	document.getElementById("titleIcon").style.width   = size;
 	document.getElementById("placeTitle").innerHTML    = "\u2022 " + title + " \u2022";
 	document.getElementById("listDistance").innerHTML  = "Distance: " + distance + " m";
-	document.getElementById("listOccupancy").innerHTML = "Occupancy: " + Math.round(Math.random()*100) + " %";
+	document.getElementById("listOccupancy").innerHTML = "Occupancy: " + Math.round(Math.random()*100) + "%";
 	swap(currentScreen, findPlacesList);
-	hideClock();
 }
 
 function goToDirectionsScreen() {
-	setPrev(directionsScreen, getPrev(currentScreen));
-	swap(currentScreen, directionsScreen);
+	setPrev(directions_start, getPrev(findPlacesList));
+	setPrev(directions_end,   getPrev(findPlacesList));
+	swap(findPlacesList, directions_start);
 	show(movementButtons);
-	showClock();
 	degree   = Math.round(Math.random()*360);
 	startGPS(arrow, distanceDisplay, distance, step);
 }
@@ -493,7 +511,7 @@ function updateDistance(display, step) {
 	if (distance <= 0) {
 		clearTimeout(walkingForward);
 		endReached();
-		notifyDestinationReached();
+		destinationReached();
 		return;
 	}
 	display.innerHTML = distance + " m";
@@ -505,29 +523,20 @@ function startGPS(arrow, text, distance, step) {
 }
 
 function endReached() {
-	distanceDisplay.innerHTML = "End";
 	hide(movementButtons);
-	hide(arrow);
-	hide(distanceDisplay);
-	setPrev(directionsScreen, getRoot(directionsScreen));
+	swap(directions_start, directions_end);
+	//setPrev(directions_end, getRoot(directions_end));
 }
 
-function notifyDestinationReached() {
-	if (secondsTic < 7) {
-		if (secondsTic % 2 == 0)
-			show(distanceDisplay);
-		else
-			hide(distanceDisplay);
-	}
-	else {
-		hide(distanceDisplay);
-		secondsTic = 0;
-		clearTimeout(destinationReachedTimeout);
-		root();
+function destinationReached() {
+	setTimeout(check, 3000, directions_end, getPrev(directions_end));
+}
+
+function check(screen1, screen2) {
+	if (currentScreen !== screen1)
 		return;
-	}
-	secondsTic += 1;
-	destinationReachedTimeout = setTimeout(notifyDestinationReached, 500);
+	console.log("Swapping");
+	swap(screen1, screen2);
 }
 /*--------------------------------------------------------------------
   emergencyModeToggle() - toggles emergency mode when using toggle
@@ -635,8 +644,8 @@ var findPlacesAnim_page1 = new Hammer(findPlaces_page1);
 var findPlacesAnim_page2 = new Hammer(findPlaces_page2);
 
 startScreenAnim.get('pan').set({direction: Hammer.DIRECTION_ALL});
-findPlacesAnim_page1.get('pan').set({direction: Hammer.DIRECTION_LEFT});
-findPlacesAnim_page2.get('pan').set({direction: Hammer.DIRECTION_RIGHT});
+findPlacesAnim_page1.get('pan').set({direction: Hammer.DIRECTION_ALL});
+findPlacesAnim_page2.get('pan').set({direction: Hammer.DIRECTION_ALL});
 /*-------------------------------------------------------------------*/
 
 startScreenAnim.on("panup panleft panright pandown", function(ev){
@@ -644,25 +653,25 @@ startScreenAnim.on("panup panleft panright pandown", function(ev){
 	show(getNext(startScreen));
 	if (ev.type == "panup") {
 		clearInterval(movementTimer);
-		fade(up, timeInterval, startScreen, bound, "pt", opacityRate);
+		fade(fadeUp, timeInterval, props, startScreen, 100, "pt", opacityRate);
 	}
 	if (ev.type == "pandown") {
 		clearInterval(movementTimer);
-		fade(down, timeInterval, startScreen, bound, "pt", opacityRate);
+		fade(fadeDown, timeInterval, props, startScreen, 100, "pt", opacityRate);
 	}
 	if (ev.type == "panleft") {
 		clearInterval(movementTimer);
-		fade(left, timeInterval, startScreen, bound, "pt", opacityRate);
+		fade(fadeLeft, timeInterval, props, startScreen, 100, "pt", opacityRate);
 	}
 	if (ev.type == "panright") {
 		clearInterval(movementTimer);
-		fade(right, timeInterval, startScreen, bound, "pt", opacityRate);
+		fade(fadeRight, timeInterval, props, startScreen, 100, "pt", opacityRate);
 	}
 })
 
 findPlacesAnim_page1.on("panleft", function(ev){
 
-	if (x === 0) {
+	if (props.left === 0) {
 		setEvents(findPlaces_page1, "none");
 		setEvents(getNext(findPlaces_page1), "none");
 		moveOutOfBounds("right", getNext(findPlaces_page1));
@@ -673,13 +682,13 @@ findPlacesAnim_page1.on("panleft", function(ev){
 
 	if (ev.type == "panleft") {
 		clearInterval(movementTimer);
-		drag(dragLeft, 1, findPlaces_page1, getNext(findPlaces_page1), 100, "%");
+		drag(dragLeft, 1, props, findPlaces_page1, getNext(findPlaces_page1), 100, "%");
 	}
 })
 
 findPlacesAnim_page2.on("panright", function(ev){
 
-	if (x === 0) {
+	if (props.left === 0) {
 		setEvents(findPlaces_page2, "none");
 		setEvents(getNext(findPlaces_page2), "none");
 		moveOutOfBounds("left", getNext(findPlaces_page2));
@@ -690,23 +699,23 @@ findPlacesAnim_page2.on("panright", function(ev){
 
 	if (ev.type == "panright") {
 		clearInterval(movementTimer);
-		drag(dragRight, 1, findPlaces_page2, getNext(findPlaces_page2), 100, "%");
+		drag(dragRight, 1, props, findPlaces_page2, getNext(findPlaces_page2), 100, "%");
 	}
 })
 
 /*-------------------------------------------------------------------*/
 var initTop    = 0;
 var initLeft   = 0;
-var bound      = 100;
 
 var y = initTop;
 var x = initLeft;
 
-var opacity      = 1;
 var opacityRate  = 0.015;
 var timeInterval = 1;
 
 var movementTimer; /* interval variable */
+
+var props = { top : 0, left : 0, opacity : 1 }
 
 /* Generic movement functions ----------------------------------------*/
 /*--------------------------------------------------------------------
@@ -725,89 +734,94 @@ var movementTimer; /* interval variable */
 	- screen2:   screen to be dragged after screen1
 	- unit:      unit of movement (%, pt, etc)
 ---------------------------------------------------------------------*/
-function fade(direction, interval, screen, bound, unit, fadeRate) {
-	movementTimer = setInterval(direction, interval, screen, bound, unit, fadeRate);
+function fade(direction, interval, properties, screen, bound, unit, fadeRate) {
+	movementTimer = setInterval(direction, interval, properties, screen, bound, unit, fadeRate);
 }
 
-function drag(direction, interval, screen1, screen2, bound, unit) {
-	movementTimer = setInterval(direction, interval, screen1, screen2, bound, unit);
+function drag(direction, interval, properties, screen1, screen2, bound, unit) {
+	movementTimer = setInterval(direction, interval, properties, screen1, screen2, bound, unit);
 }
 
 
-function up(screen, bound, unit, rate) {
-	y--;
-	opacity -= rate;
-	if (Math.abs(bound) <= Math.abs(y)) {
+function fadeUp(properties, screen, bound, unit, rate) {
+	fade_generic(properties, "up", screen, bound, unit, rate, "top");
+}
+
+function fadeDown(properties, screen, bound, unit, rate) {
+	fade_generic(properties, "down", screen, bound, unit, rate, "top");
+}
+
+function fadeLeft(properties, screen, bound, unit, rate) {
+	fade_generic(properties, "left", screen, bound, unit, rate, "left");
+}
+
+function fadeRight(properties, screen, bound, unit, rate) {
+	fade_generic(properties, "right", screen, bound, unit, rate, "left");
+}
+
+function dragLeft(properties, screen1, screen2, bound, unit) {
+	drag_generic(properties, "left", screen1, screen2, bound, unit, "left");
+}
+
+function dragRight(properties, screen1, screen2, bound, unit) {
+	drag_generic(properties, "right", screen1, screen2, bound, unit, "left");
+}
+
+function dragUp(properties, screen1, screen2, bound, unit) {
+	drag_generic(properties, "up", screen1, screen2, bound, unit, "top");
+}
+
+function dragDown(properties, screen1, screen2, bound, unit) {
+	drag_generic(properties, "down", screen1, screen2, bound, unit, "top");
+}
+
+
+function fade_generic(properties, dir, screen, bound, unit, rate, attr) {
+	var step;
+	if (dir === "right" || dir === "down")
+		step = 1;
+	else if (dir === "left" || dir === "up")
+		step = -1;
+	else {
+		clearInterval(movementTimer);
+		console.error("fade_generic: invalid direction (left, right, up, down): ", dir);
+		return;
+	}
+
+	properties[attr]   += step;
+	properties.opacity -= rate;
+	if (Math.abs(bound) <= Math.abs(properties[attr])) {
 		clearInterval(movementTimer);
 		resetScreen(screen);
+		resetMovementProperties(properties, 0, 0, 1);
 	}
 	else {
-		screen.style.opacity = opacity;
-		screen.style.top = y + unit;
+		screen.style.opacity = properties.opacity;
+		screen.style[attr]   = properties[attr] + unit;
 	}
 }
 
-function down(screen, bound, unit, rate) {
-	y++;
-	opacity -= rate;
-	if (Math.abs(bound) <= Math.abs(y)) {
+function drag_generic(properties, dir, screen1, screen2, bound, unit, attr) {
+	var step;
+	if (dir === "right" || dir === "down")
+		step = 1;
+	else if (dir === "left" || dir === "up")
+		step = -1;
+	else {
 		clearInterval(movementTimer);
-		resetScreen(screen);
+		console.error("fade_generic: invalid direction (left, right, up, down): ", dir);
+		return;
 	}
-	else {
-		screen.style.opacity = opacity;
-		screen.style.top     = y + unit;
-	}
-}
 
-function left(screen, bound, unit, rate) {
-	x--;
-	opacity -= rate;
-	if (Math.abs(bound) <= Math.abs(x)) {
-		clearInterval(movementTimer);
-		resetScreen(screen);
-	}
-	else {
-		screen.style.opacity = opacity;
-		screen.style.left    = x + unit;
-	}
-}
-
-function right(screen, bound, unit, rate) {
-	x++;
-	opacity -= rate;
-	if (Math.abs(bound) <= Math.abs(x)) {
-		clearInterval(movementTimer);
-		resetScreen(screen);
-	}
-	else {
-		screen.style.opacity = opacity;
-		screen.style.left    = x + unit;
-	}
-}
-
-function dragLeft(screen1, screen2, bound, unit) {
-	x--;
-	if (Math.abs(bound) <= Math.abs(x)) {
+	properties[attr] += step;
+	if (Math.abs(bound) <= Math.abs(properties[attr])) {
 		clearInterval(movementTimer);
 		resetScreen(screen2);
 		resetScreen(screen1);
+		resetMovementProperties(properties, 0, 0);
 	}
 	else {
-		screen1.style.left = x + unit;
-		screen2.style.left = (bound + x) + unit;
-	}
-}
-
-function dragRight(screen1, screen2, bound, unit) {
-	x++;
-	if (Math.abs(bound) <= Math.abs(x)) {
-		clearInterval(movementTimer);
-		resetScreen(screen2);
-		resetScreen(screen1);
-	}
-	else {
-		screen1.style.left = x + unit;
-		screen2.style.left = (-bound + x) + unit;
+		screen1.style[attr] = properties[attr] + unit;
+		screen2.style[attr] = (-step * bound + properties[attr]) + unit;
 	}
 }

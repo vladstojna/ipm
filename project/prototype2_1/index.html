@@ -17,7 +17,7 @@
 			<img id="watchBody"  class="center" src="images/watch_body_transparent_noButtons_circle.png">
 
 			<!-- Vibrating screen simulation -->
-			<div id="vibratingScreen" class="center screen"></div>
+			<div id="vibratingScreen" class="center foreground"></div>
 
 			<!-- Character movement simulation buttons -->
 			<div id="movementButtons" class="center screen">
@@ -27,7 +27,7 @@
 			</div>
 
 			<!-- Mask wrapper -->
-			<div id=buttonWrapper class="center screen">
+			<div id=buttonWrapper class="center foreground">
 				<!-- Buttons and their respective maps -->
 				<img id="toggleOff" class="button" src="images/buttons/button-toggleOff.png" usemap="#toggleMap">
 				<img id="toggleOn"  class="button" src="images/buttons/button-toggleOn.png"  usemap="#toggleMap">
@@ -38,7 +38,7 @@
 						<area alt="emergencyToggle" id="emergencyToggle"
 						shape="poly"
 						coords="0,54,16,27,28,34,14,60"
-						onclick="emergencyModeToggle(); vibration(); swapToggle()" >
+						onclick="emergencyModeToggle(); swapToggle(); vibration()" >
 					</map>
 					<map name="unlockMap" id="unlockMap">
 						<area alt="unlockButton" id="unlockButton"
@@ -50,12 +50,12 @@
 						<area alt="backButton" id="backButton"
 						shape="poly"
 						coords="9,62,43,6,48,35,38,52"
-						onclick="back(); showClock(); hide(movementButtons)" >
+						onclick="back(); hide(movementButtons)" >
 					</map>
 			</div>
 
 			<!-- Wrapper that holds relevant data -->
-			<div id="hiddenWrapper" class="center screen" style="overflow: hidden">
+			<div id="screenWrapper" class="center screen" style="overflow: hidden">
 
 				<!-- Emergency screen -->
 				<div id="emergencyScreen" class="seethrough screen">
@@ -98,14 +98,14 @@
 				<!-- Main menu screen -->
 				<div id="mainMenu" class="screen">
 
-					<div id="findPeopleButton" class="onscreen2 button" onclick="">
+					<div id="findPeopleButton" class="onscreen big button" onclick="">
 						<img id="findPeople" class="icon" src="images/icons/icon-find_people-white.png">
 					</div>
-					<div id="findPlacesButton" class="onscreen2 button" onclick="goToFindPlacesMenu()">
+					<div id="findPlacesButton" class="onscreen big button" onclick="goToFindPlacesMenu()">
 						<img id="findPlaces" class="icon" src="images/icons/icon-find_places-white.png">
 					</div>
 
-					<div id="playlistButton" class="onscreen2 button" onclick="">
+					<div id="playlistButton" class="onscreen button" onclick="">
 						<span class="text" style="font-size: 18pt"> MUSIC </span>
 					</div>
 
@@ -117,36 +117,36 @@
 				</div>
 
 				<!-- Find places menu -->
-				<div id="findPlacesMenu" class="screen">
+				<div id="findPlacesWrapper" class="screen">
 
-					<div id="findPlacesMenu_page1" class="background">
+					<div id="findPlacesMenu_page1" class="foreground">
 
 						<!-- Buttons -->
-						<div id="topLeftButton_page1" class="onscreen2 onscreen button top left"         onclick="goToCandidateList('wc','53pt','Restroom')">
-							<img id="wcIcon"     class="icon" src="images/icons/icon-wc-white.png">
+						<div id="topLeftButton_page1" class="onscreen small button top left"         onclick="goToCandidateList('wc','53pt','Restroom')">
+							<img id="wcIcon" class="icon" src="images/icons/icon-wc-white.png">
 						</div>
-						<div id="topRightButton_page1" class="onscreen2 onscreen button top right"       onclick="goToCandidateList('food','33pt','Food court')">
-							<td><img id="foodIcon"    class="icon" src="images/icons/icon-food-white.png">
+						<div id="topRightButton_page1" class="onscreen small button top right"       onclick="goToCandidateList('food','33pt','Food court')">
+							<td><img id="foodIcon" class="icon" src="images/icons/icon-food-white.png">
 						</div>
-						<div id="bottomLeftButton_page1"  class="onscreen2 onscreen button bottom left"  onclick="goToCandidateList('drinks','33pt','Drinks / Bar')">
-							<img id="drinkIcon"      class="icon" src="images/icons/icon-drinks-white.png">
+						<div id="bottomLeftButton_page1" class="onscreen small button bottom left"   onclick="goToCandidateList('drinks','33pt','Drinks / Bar')">
+							<img id="drinkIcon" class="icon" src="images/icons/icon-drinks-white.png">
 						</div>
-						<div id="bottomRightButton_page1" class="onscreen2 onscreen button bottom right" onclick="goToCandidateList('camping','47pt','Camping site')">
-							<img id="campingIcon"    class="icon" src="images/icons/icon-camping-white.png">
+						<div id="bottomRightButton_page1" class="onscreen small button bottom right" onclick="goToCandidateList('camping','47pt','Camping site')">
+							<img id="campingIcon" class="icon" src="images/icons/icon-camping-white.png">
 						</div>
 					</div>
 
-					<div id="findPlacesMenu_page2" class="background">
+					<div id="findPlacesMenu_page2" class="foreground">
 
 						<!-- Buttons -->
-						<div id="topLeftButton_page1" class="onscreen2 onscreen button top left"       onclick="goToCandidateList('charging','35pt','Charging station')">
-							<img id="chargingIcon"    class="icon" src="images/icons/icon-charging-white.png" usemap="">
+						<div id="topLeftButton_page1" class="onscreen small button top left"       onclick="goToCandidateList('charging','35pt','Charging station')">
+							<img id="chargingIcon" class="icon" src="images/icons/icon-charging-white.png">
 						</div>
-						<div id="topRightButton_page1" class="onscreen2 onscreen button top right"     onclick="goToCandidateList('info','46pt','Get help / info')">
-							<img id="infoIcon"         class="icon" src="images/icons/icon-info-white.png">
+						<div id="topRightButton_page1" class="onscreen small button top right"     onclick="goToCandidateList('info','46pt','Get help / info')">
+							<img id="infoIcon" class="icon" src="images/icons/icon-info-white.png">
 						</div>
-						<div id="bottomLeftButton_page1" class="onscreen2 onscreen button bottom left" onclick="goToCandidateList('exit','44pt','Exit festival')">
-							<img id="exitIcon"           class="icon" src="images/icons/icon-exit-white.png">
+						<div id="bottomLeftButton_page1" class="onscreen small button bottom left" onclick="goToCandidateList('exit','44pt','Exit festival')">
+							<img id="exitIcon" class="icon" src="images/icons/icon-exit-white.png">
 						</div>
 					</div>
 
@@ -176,13 +176,21 @@
 					</table>
 
 				</div>
+			
+					<!-- Generic directions screen (GPS) -->
+				<div id="directionsWrapper">
 
-				<!-- Generic directions screen (GPS) -->
-				<div id="directionsScreen" class="screen">
+					<div id="directionsScreen_start" class="screen">
+						<img id="arrow" class="icon" src="images/icons/icon-arrow-white.png">
+						<div id="distanceCircle" class="icon">
+							<span id="distanceDisplay" class="text"></span>
+						</div>
+					</div>
 
-					<img id="arrow" class="icon" src="images/icons/icon-arrow-white.png">
-					<div id="distanceCircle" class="icon">
-						<span id="distanceDisplay" class="text"></span>
+					<div id="directionsScreen_end" class="screen">
+						<div id="distanceCircle" class="icon">
+							<span id="endReached" class="text"> End </span>
+						</div>
 					</div>
 
 				</div>
