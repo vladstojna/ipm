@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> irave </title>
+		<meta charset="utf-8">
+		<!-- Additional libraries -->
+		<script src="https://hammerjs.github.io/dist/hammer.js"></script>
+		<script src="js/dragscroll.js"></script>
+		<!-- Custom Font -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro"> 
+		<link rel="styleSheet" type="text/css" href="css/style.css">
+	</head>
+	<body onload="initVisibility(); initScreenOrder(); generateContactList(); addEventListeners()">
+		<!-- Container with all elements -->
+		<div id="container">
+
+			<!-- Main watch body image -->
+			<img id="watchBody"  class="center" src="images/watch_body_transparent_noButtons_circle.png">
+
+			<!-- Vibrating screen simulation -->
+			<div id="vibratingScreen" class="center foreground"></div>
+
+			<!-- Character movement simulation buttons -->
+			<div id="movementButtons" class="center foreground">
+				<span id="goForward"  class="text button" onclick="forward()"> F </span>
+				<span id="goLeft"     class="text bottom left button" onclick="leftRotation()">  L </span>
+				<span id="goRight"    class="text bottom right button" onclick="rightRotation()"> R </span>
+			</div>
+
+			<!-- Smartphone connection simulation button -->
+			<div id="smartphone" class="button">
+				<span class="text">Smartphone</span>
+			</div>
+
+			<!-- Mask wrapper -->
+			<div id=buttonWrapper class="center foreground">
+				<!-- Buttons and their respective maps -->
+				<img id="toggleOff" class="button" src="images/buttons/button-toggleOff.png" usemap="#toggleMap">
+				<img id="toggleOn"  class="button" src="images/buttons/button-toggleOn.png"  usemap="#toggleMap">
+				<img id="unlock"    class="button" src="images/buttons/button-unlock.png"    usemap="#unlockMap">
+				<img id="back"      class="button" src="images/buttons/button-back.png"      usemap="#backMap">
+
+					<map name="toggleMap" id="toggleMap">
+						<area alt="emergencyToggle" id="emergencyToggle"
+						shape="poly"
+						coords="0,54,16,27,28,34,14,60"
+						onclick="emergencyModeToggle(); swapToggle(); vibration()" >
+					</map>
+					<map name="unlockMap" id="unlockMap">
+						<area alt="unlockButton" id="unlockButton"
+						shape="poly"
+						coords="10,4,42,59,47,26,34,9"
+						onclick="lock()" >
+					</map>
+					<map name="backMap" id="backMap">
+						<area alt="backButton" id="backButton"
+						shape="poly"
+						coords="9,62,43,6,48,35,38,52"
+						onclick="back(); hideCheck(document.getElementById('movementButtons')); hideCheck(document.getElementById('smartphone'))" >
+					</map>
+			</div>
+
+			<!-- Wrapper that holds relevant data -->
+			<div id="screenWrapper" class="center screen" style="overflow: hidden">
+
+				<!-- Emergency screen -->
+				<div id="emergencyScreen" class="seethrough screen">
+					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#acceptMap">
+					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#declineMap">
+
+					<span id="emergencyTitle" class="text"> Emergency? </span>
+
+						<map name="acceptMap" id="acceptMap">
+							<area alt="emergencyAcceptButton" id="emergencyAcceptButton"
+							shape="circle"
+							coords="45,44,40"
+							onclick="acceptEmergency()" >
+						</map>
+						<map name="declineMap" id="declineMap">
+							<area alt="emergencyDeclineButton" id="emergencyDeclineButton"
+							shape="circle"
+							coords="45,44,40"
+							onclick="declineEmergency()" >
+						</map>
+				</div>
+
+				<!-- Help declined screen, when emergency call is canceled -->
+				<div id="helpDeclinedScreen" class="seethrough screen">
+					<img id="instruction" class="icon" src="images/icons/icon-untoggle-light_skyblue.png">
+				</div>
+
+				<!-- Help accepted screen, when emergency call is successful -->
+				<div id="helpAcceptedScreen" class="seethrough screen">
+					<span id="helpComingText" class="text"> HELP ON THE WAY </span>
+					<span id="helpTimer"      class="text"></span>
+				</div>
+
+				<!-- Foreground emergency timer -->
+				<span id="foregroundTimeleft" class="text"> </span>
+
+				<!-- Small clock in all menus -->
+				<span id="menuClock" class="text"></span>
+
+				<!-- Main menu screen -->
+				<div id="mainMenu" class="screen">
+
+					<div id="findPeopleButton" class="onscreen big button" onclick="goToFindPeopleMenu()">
+						<img id="findPeople" class="icon" src="images/icons/icon-find_people-white.png">
+					</div>
+					<div id="findPlacesButton" class="onscreen big button" onclick="goToFindPlacesMenu()">
+						<img id="findPlaces" class="icon" src="images/icons/icon-find_places-white.png">
+					</div>
+
+					<table id="OrbTable">
+						<tr>
+							<td id="orb" class="orb icon"></td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- Find places menu -->
+				<div id="findPlacesWrapper" class="screen">
+
+					<div id="findPlacesMenu_page1" class="foreground">
+
+						<!-- Buttons -->
+						<div id="topLeftButton_page1" class="onscreen small button top left"         onclick="goToCandidateList('wc','53pt','Restroom')">
+							<img id="wcIcon" class="icon" src="images/icons/icon-wc-white.png">
+						</div>
+						<div id="topRightButton_page1" class="onscreen small button top right"       onclick="goToCandidateList('food','33pt','Food court')">
+							<td><img id="foodIcon" class="icon" src="images/icons/icon-food-white.png">
+						</div>
+						<div id="bottomLeftButton_page1" class="onscreen small button bottom left"   onclick="goToCandidateList('drinks','33pt','Drinks / Bar')">
+							<img id="drinkIcon" class="icon" src="images/icons/icon-drinks-white.png">
+						</div>
+						<div id="bottomRightButton_page1" class="onscreen small button bottom right" onclick="goToCandidateList('camping','47pt','Camping site')">
+							<img id="campingIcon" class="icon" src="images/icons/icon-camping-white.png">
+						</div>
+					</div>
+
+					<div id="findPlacesMenu_page2" class="foreground">
+
+						<!-- Buttons -->
+						<div id="topLeftButton_page1" class="onscreen small button top left"       onclick="goToCandidateList('charging','35pt','Charging station')">
+							<img id="chargingIcon" class="icon" src="images/icons/icon-charging-white.png">
+						</div>
+						<div id="topRightButton_page1" class="onscreen small button top right"     onclick="goToCandidateList('info','46pt','Get help / info')">
+							<img id="infoIcon" class="icon" src="images/icons/icon-info-white.png">
+						</div>
+						<div id="bottomLeftButton_page1" class="onscreen small button bottom left" onclick="goToCandidateList('exit','44pt','Exit festival')">
+							<img id="exitIcon" class="icon" src="images/icons/icon-exit-white.png">
+						</div>
+					</div>
+
+					<table id="OrbTable">
+						<tr>
+							<td id="orb1" class="orb icon"></td>
+							<td id="orb2" class="orb icon"></td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- Find people menu -->
+				<div id="findPeopleMenu" class="screen">
+					<div id="syncButton" class="onscreen button">
+						<img id="sync" class="icon" src="images/icons/sync.png">
+					</div>
+					<div id="contactList" class="center dragscroll">
+					</div>
+				</div>
+
+				<!-- Contact page - page of a specific contact -->
+				<div id="contactPage" class="screen">
+					<img id="avatar" class="icon" src="">
+					<img class="directions button" src="images/icons/icon-directions_font_round-white.png">
+					<table class="bounded text">
+						<tr>
+							<!-- Contact name -->
+							<th id="personName"></th>
+						</tr>
+						<tr>
+							<!-- Telephone number -->
+							<td>(912 345 678)</td>
+						</tr>
+						<tr>
+							<!-- Distance to person -->
+							<td id="personDistance"></td>
+						</tr>
+					</table>
+				</div>
+
+				<!-- Find place listing -->
+				<div id="findPlacesList" class="screen">
+
+					<img id="titleIcon" class="icon" src="">
+					<img class="directions button" src="images/icons/icon-directions_font_round-white.png">
+					<table class="bounded text">
+						<tr>
+							<!-- Name of place to find -->
+							<th id="placeTitle"></th>
+						</tr>
+						<tr>
+							<!-- Distance to place -->
+							<td id="listDistance"></td>
+						</tr>
+						<tr>
+							<!-- Occupancy of place -->
+							<td id="listOccupancy"></td>
+						</tr>
+					</table>
+
+				</div>
+
+				<!-- Progress bar screen -->
+				<div id="progressScreen" class="screen">
+					<span id="connectingText" class="text"></span>
+
+					<div id="progressBar" class="center">
+						<div id="currentProgress"></div>
+						<span id="currentPercent" class="text">0%</span>
+					</div>
+				</div>
+			
+				<!-- Generic directions screen (GPS) -->
+				<div id="directionsWrapper">
+
+					<div id="directionsScreen_start" class="screen">
+						<img id="arrow" class="icon" src="images/icons/icon-arrow-white.png">
+						<div id="distanceCircle" class="onscreen icon">
+							<span id="distanceDisplay" class="text"></span>
+						</div>
+					</div>
+
+					<div id="directionsScreen_end" class="screen">
+						<div id="distanceCircle" class="onscreen icon">
+							<span id="endReached" class="text"> End </span>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Sync screen -->
+				<div id="syncScreen" class="screen">
+					<span id="syncText" class="text">
+						Please connect your smartphone to iRave via bluetooth.
+						<br>
+						Password: <b>ABC123</b>
+					</span>
+				</div>
+
+				<!-- Generic cancel confirmation screen -->
+				<div id="cancelConfirmScreen" class="seethrough screen">
+					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#cancelMap">
+					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#notCancelMap">
+
+					<span id="cancelConfirmText" class="text"> Going back will cancel current action. Are you sure? </span>
+
+						<map name="cancelMap">
+							<area
+							shape="circle"
+							coords="45,44,40"
+							onclick="endReached(); root()" >
+						</map>
+						<map name="notCancelMap">
+							<area
+							shape="circle"
+							coords="45,44,40"
+							onclick="back()" >
+						</map>
+				</div>
+
+				<!-- Starting (welcome) screen -->
+				<div id=startScreen class="screen">
+					<span id="clock" class="text"></span>
+				</div>
+
+				<!-- Lock screen, when watch is in screen disabled state -->
+				<div id="lockScreen"  class="foreground" onclick="unlock()"></div>
+
+			</div>
+
+		</div>
+
+	</body>
+	<script src="js/script.js"></script>
+</html>
