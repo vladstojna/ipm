@@ -323,12 +323,8 @@
 /*-----------------------------------------------
 |   Movement buttons / smartphone
 \------------------------------------------------*/
-#movementButtons {
-	top: 25%;
-}
-
 #smartphone {
-	top: 70%;
+	top: 120%;
 	border-radius: 50pt;
 	background-color: grey;
 	width: 150pt;
@@ -343,6 +339,20 @@
 	width: 40pt;
 	height: 40pt;
 	font-size: 28pt;
+}
+
+#goForward {
+	top: -30%;
+}
+
+#goLeft {
+	top: -15%;
+	left: 25%;
+}
+
+#goRight {
+	top: -15%;
+	left: 75%;
 }
 
 /*-----------------------------------------------

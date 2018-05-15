@@ -469,6 +469,7 @@ function progress(text, callback) {
 	var prog  = document.getElementById("currentPercent");
 	var width = 0;
 	var freq  = setInterval(frame, 25);
+	var ret;
 
 	document.getElementById("connectingText").innerHTML = text;
 
@@ -479,7 +480,12 @@ function progress(text, callback) {
 		else if (width >= 100) {
 			clearInterval(freq);
 			prog.innerHTML = "SUCCESS";
-			setTimeout(callback, 1500);
+			ret = setInterval(function() {
+				if (!emergencyModeOn) {
+					clearInterval(ret);
+					callback();
+				}
+			}, 1500);
 		}
 		else {
 			width++;
