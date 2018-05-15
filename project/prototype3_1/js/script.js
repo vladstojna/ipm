@@ -138,10 +138,7 @@ function setAreaCoords(area, coords)     { area.coords = coords; }
 
 function setEvents(element, ev) { element.style.pointerEvents = ev; }
 
-function hideCheck(element) {
-	if (currentScreen != helpDeclined)
-		hide(element);
-}
+function hideCheck(element) { if (currentScreen != helpDeclined) hide(element); }
 
 
 function swap(screenBefore, screenAfter) {
@@ -278,15 +275,15 @@ function initVisibility() {
 	hide(smartphone);
 
 	/* Set visibility z-indexes */
-	zIndex(ambulance,    10);
-	zIndex(helpComing,   9);
-	zIndex(helpDeclined, 9);
-	zIndex(emergency,    9);
-	zIndex(cancelConfirmScreen, 9);
-	zIndex(syncConfirmScreen,   9);
+	zIndex(helpComing,   11);
+	zIndex(helpDeclined, 11);
+	zIndex(emergency,    11);
+	zIndex(lockScreen,   10);
+	zIndex(ambulance,    9);
+	zIndex(cancelConfirmScreen, 8);
+	zIndex(syncConfirmScreen,   8);
 	zIndex(findPlacesList, 3);
 	zIndex(contactPage,    3);
-	zIndex(lockScreen,     3);
 	zIndex(startScreen,    3);
 	zIndex(menuClock,      2);
 	zIndex(mainMenu,       1);
@@ -424,23 +421,25 @@ function checkTime(n) {
   root()   - returns to root screen from current screen
 ---------------------------------------------------------------------*/
 function unlock() {
-	if (emergencyCalled)
-		show(ambulance);
 	swap(lockScreen, startScreen)
 	updateHours();
 }
 
 function lock() {
-	if (emergencyModeOn || currentScreen === progressScreen)
+	if (currentScreen == progressScreen)
 		return;
-	if (currentScreen != lockScreen) {
-		if (emergencyCalled)
-			hide(ambulance);
+	if (currentScreen == lockScreen)
+		unlock();
+	else if (emergencyModeOn)
+		back();
+	else {
 		if (currentScreen != startScreen)
-			setNext(startScreen, currentScreen);
+			if (currentScreen != directions_end)
+				setNext(startScreen, currentScreen);
+			else
+				setNext(startScreen, getPrev(directions_end));
 		swap(currentScreen, lockScreen);
 	}
-	else unlock();
 }
 
 function back() { swap(currentScreen, getPrev(currentScreen)); }
@@ -489,6 +488,7 @@ function progress(text, callback) {
 					clearInterval(ret);
 					callback();
 				}
+				else console.log("progress: Paused; emergencyModeOn is", emergencyModeOn);
 			}, 1500);
 		}
 		else {
@@ -588,7 +588,6 @@ function goToDirectionsScreen(from_screen, return_screen) {
   startGPS()       - starts GPS simulation with random distance and angle
   endReached()     - behaviour when character reaches destination
   destinationReached() - notifies user that destination was reached
-  check() - checks if T/O swap is correct
 ---------------------------------------------------------------------*/
 function forward() {
 	var coeff;
@@ -656,15 +655,22 @@ function endReached() {
 }
 
 function destinationReached() {
-	setTimeout(check, 3000, directions_end, getPrev(directions_end));
+	var ret = setInterval(function() {
+		if (emergencyModeOn) {
+			console.log("destinationReached: Staying; emergencyModeOn is", emergencyModeOn, [directions_end]);
+		}
+		else if (currentScreen == directions_end) {
+			clearInterval(ret);
+			console.log("destinationReached: Returning", [currentScreen, directions_end]);
+			swap(directions_end, getPrev(directions_end));
+		}
+		else {
+			clearInterval(ret);
+			console.log("destinationReached: Doing nothing", [currentScreen, directions_end]);
+		}
+	}, 3000);
 }
 
-function check(screen1, screen2) {
-	if (currentScreen !== screen1)
-		return;
-	console.log("check: successful", arguments);
-	swap(screen1, screen2);
-}
 /*--------------------------------------------------------------------
   emergencyModeToggle() - toggles emergency mode when using toggle
 
@@ -684,7 +690,7 @@ function emergencyModeToggle() {
 	}
 	else { /* Deactivate emergency mode */
 		/* backgroundScreen = screen before using emergency */
-		if (emergencyCalled && backgroundScreen != lockScreen)
+		if (emergencyCalled)
 			show(ambulance);
 		/* currentScreen = emergency OR helpComing */
 		hideEmergency(currentScreen, backgroundScreen);
