@@ -25,9 +25,10 @@ var helpDeclined    = document.getElementById("helpDeclinedScreen");
 var ambulance       = document.getElementById("foregroundTimeleft");
 
 /* Find people displays ---------------------------------------------*/
-var findPeopleMenu = document.getElementById("findPeopleMenu");
-var contactPage    = document.getElementById("contactPage");
-var syncScreen     = document.getElementById("syncScreen");
+var findPeopleMenu    = document.getElementById("findPeopleMenu");
+var contactPage       = document.getElementById("contactPage");
+var syncScreen        = document.getElementById("syncScreen");
+var syncConfirmScreen = document.getElementById("syncConfirmScreen");
 
 /* Find places displays ---------------------------------------------*/
 var findPlacesWrapper = document.getElementById("findPlacesWrapper"); /* background & orbs */
@@ -254,6 +255,7 @@ function initVisibility() {
 	hide(findPeopleMenu);
 	hide(contactPage);
 	hide(syncScreen);
+	hide(syncConfirmScreen);
 
 	/* Find places screens ------------------------------------------------*/
 	//hide(findPlacesWrapper); // hides orbs, don't hide
@@ -281,6 +283,7 @@ function initVisibility() {
 	zIndex(helpDeclined, 9);
 	zIndex(emergency,    9);
 	zIndex(cancelConfirmScreen, 9);
+	zIndex(syncConfirmScreen,   9);
 	zIndex(findPlacesList, 3);
 	zIndex(contactPage,    3);
 	zIndex(lockScreen,     3);
@@ -307,6 +310,7 @@ function initScreenOrder() {
 	setPrev(findPeopleMenu, mainMenu);
 	setPrev(contactPage,    findPeopleMenu);
 	setPrev(syncScreen,     findPeopleMenu);
+	setPrev(syncConfirmScreen, findPeopleMenu);
 	setNext(findPeopleMenu, contactPage);
 
 	/* Find Places menu ---------------------------------------------------*/
@@ -373,7 +377,7 @@ function addEventListeners() {
 	});
 
 	document.getElementById("syncButton").addEventListener("click", function() {
-		goToSyncScreen();
+		goToSyncConfirmScreen();
 	});
 
 	document.getElementById("smartphone").addEventListener("click", function () {
@@ -471,7 +475,7 @@ function progress(text, callback) {
 	var freq  = setInterval(frame, 25);
 	var ret;
 
-	document.getElementById("connectingText").innerHTML = text;
+	document.getElementById("progressText").innerHTML = text;
 
 	elem.style.width = width + "%";
 
@@ -510,7 +514,13 @@ function goToFindPeopleMenu() {
 	swap(mainMenu, findPeopleMenu);
 }
 
+function goToSyncConfirmScreen() {
+	show(syncConfirmScreen);
+	current(syncConfirmScreen);
+}
+
 function goToSyncScreen() {
+	hide(syncConfirmScreen);
 	swap(findPeopleMenu, syncScreen);
 	show(smartphone);
 }
@@ -519,7 +529,7 @@ function syncSmartphone(from_screen, return_screen) {
 	var ps = document.getElementById("progressScreen");
 	swap(from_screen, ps);
 	hide(smartphone);
-	progress("Syncing with smartphone contacts...", function() {
+	progress("Syncing...", function() {
 		swap(ps, return_screen);
 	});
 }
@@ -558,7 +568,7 @@ function goToDirectionsScreen(from_screen, return_screen) {
 
 	var ps = document.getElementById("progressScreen");
 	swap(from_screen, ps);
-	progress("Connecting to GPS services...", function() {
+	progress("Connecting to GPS...", function() {
 		setPrev(directions_start, return_screen);
 		setPrev(directions_end,   return_screen);
 		swap(ps, directions_start);

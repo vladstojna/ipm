@@ -20,7 +20,7 @@
 			<!-- Vibrating screen simulation -->
 			<div id="vibratingScreen" class="center foreground"></div>
 
-			<!-- Buttons not related to interface related -->
+			<!-- Buttons not interface-related -->
 			<div class="center foreground">
 			<!-- Character movement simulation buttons -->
 				<div id="movementButtons" class="foreground">
@@ -31,7 +31,7 @@
 
 				<!-- Smartphone connection simulation button -->
 				<div id="smartphone" class="button">
-					<span class="text">Smartphone</span>
+					<span class="text">Connect Smartphone</span>
 				</div>
 			</div>
 
@@ -68,8 +68,8 @@
 
 				<!-- Emergency screen -->
 				<div id="emergencyScreen" class="seethrough screen">
-					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#acceptMap">
-					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#declineMap">
+					<img class="yes button" src="images/icons/check-ok.png"     usemap="#acceptMap">
+					<img class="no button"  src="images/icons/check-failed.png" usemap="#declineMap">
 
 					<span id="emergencyTitle" class="text"> Emergency? </span>
 
@@ -216,7 +216,7 @@
 
 				<!-- Progress bar screen -->
 				<div id="progressScreen" class="screen">
-					<span id="connectingText" class="text"></span>
+					<span id="progressText" class="text"></span>
 
 					<div id="progressBar" class="center">
 						<div id="currentProgress"></div>
@@ -244,17 +244,42 @@
 
 				<!-- Sync screen -->
 				<div id="syncScreen" class="screen">
-					<span id="syncText" class="text">
-						Please connect your smartphone to iRave via bluetooth.
+					<img id="smartphoneIcon" class="icon" src="images/icons/smartphone-bluetooth.png">
+					<img id="rightArrow"     class="icon" src="images/icons/right-arrow.png">
+					<img id="iraveIcon"      class="icon" src="images/icons/irave-white.png">
+
+					<span id="syncText"  class="text">
+						Password:
 						<br>
-						Password: <b>ABC123</b>
+						<b>a1b2c3</b>
 					</span>
 				</div>
 
+				<!-- Confirm sync screen -->
+				<div id="syncConfirmScreen" class="seethrough screen">
+						<img class="yes button" src="images/icons/check-ok.png"     usemap="#yesSync">
+						<img class="no button"  src="images/icons/check-failed.png" usemap="#noSync">
+	
+						<span id="syncConfirmText" class="text"> Sync with smartphone contacts? </span>
+	
+							<map name="yesSync" id="yesSync">
+								<area
+								shape="circle"
+								coords="45,44,40"
+								onclick="goToSyncScreen()" >
+							</map>
+							<map name="noSync" id="noSync">
+								<area
+								shape="circle"
+								coords="45,44,40"
+								onclick="back()" >
+							</map>
+					</div>				
+
 				<!-- Generic cancel confirmation screen -->
 				<div id="cancelConfirmScreen" class="seethrough screen">
-					<img id="callHelp"    class="button" src="images/icons/check-ok.png"     usemap="#cancelMap">
-					<img id="cancelHelp"  class="button" src="images/icons/check-failed.png" usemap="#notCancelMap">
+					<img class="yes button" src="images/icons/check-ok.png"     usemap="#cancelMap">
+					<img class="no button"  src="images/icons/check-failed.png" usemap="#notCancelMap">
 
 					<span id="cancelConfirmText" class="text"> Going back will cancel current action. Are you sure? </span>
 

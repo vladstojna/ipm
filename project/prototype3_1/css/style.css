@@ -52,6 +52,7 @@
 	color: rgb(238, 238, 236);
 	font-family: 'Source Sans Pro', sans-serif;
 	text-align: center;
+	/* Optional shadow */
 	/*
 	text-shadow:
 	-1px -1px 0 black,
@@ -82,24 +83,6 @@
 	border-radius: 50%;
 	top: 89%;
 }
-.row {
-	height: 30pt;
-	line-height: 30pt;
-	width: 100%;
-	font-size: 12.5pt;
-	text-align: left;
-	border-radius: 50pt;
-	background-color: rgba(114, 159, 207, 0.5);
-	margin: 12pt 0pt 12pt 0pt;
-}
-
-.row img {
-	float: left;
-	margin: 0pt 7pt 0pt 0pt;
-	height: 100%;
-	border-radius: 50%;
-	background-color: rgb(114, 159, 207);
-}
 
 #mainMenu .orb {
 	background-color: rgb(238, 238, 236);
@@ -112,6 +95,22 @@
 .directions {
 	top: 72%;
 	width: 100pt;
+}
+
+/* Yes and No buttons (generic) */
+
+.yes {
+	top: 60%;
+	left: 30%;
+	width: 65pt;
+	border-radius: 50%;
+}
+
+.no {
+	top: 60%;
+	left: 70%;
+	width: 65pt;
+	border-radius: 50%;
 }
 
 /*-----------------------------------------------
@@ -201,18 +200,6 @@
 /*-----------------------------------------------
 |   Emergency screen
 \------------------------------------------------*/
-#callHelp {
-	top: 60%;
-	left: 30%;
-	width: 65pt;
-}
-
-#cancelHelp {
-	top: 60%;
-	left: 70%;
-	width: 65pt;
-}
-
 #emergencyTitle {
 	top: 35%;
 	font-size: 24pt;
@@ -242,7 +229,6 @@
 /*-----------------------------------------------
 |   Foreground emergency timer
 \------------------------------------------------*/
-
 #foregroundTimeleft {
 	top: 84%;
 	color: rgb(255, 145, 145);
@@ -274,11 +260,32 @@
 /*-----------------------------------------------
 |   Find People menu
 \------------------------------------------------*/
+.row {
+	height: 30pt;
+	line-height: 30pt;
+	width: 75%;
+	font-size: 12.5pt;
+	text-align: left;
+	border-radius: 50pt;
+	background-color: rgba(114, 159, 207, 0.5);
+	margin: 12pt 0pt 12pt 25pt;
+}
+
+.row img {
+	float: left;
+	margin: 0pt 7pt 0pt 0pt;
+	height: 100%;
+	border-radius: 50%;
+	background-color: rgb(114, 159, 207);
+}
+
 #contactList {
 	overflow: hidden;
-	width: 60%;
+	width: 80%;
 	height: 58%;
 	left: 45%;
+	border-top: 1px solid rgba(238, 238, 236, 0.5);
+	border-bottom: 1px solid rgba(238, 238, 236, 0.5);
 }
 
 #syncButton {
@@ -329,7 +336,7 @@
 	background-color: grey;
 	width: 150pt;
 	height: 75pt;
-	font-size: 24pt;
+	font-size: 22pt;
 }
 
 #movementButtons .button {
@@ -382,21 +389,47 @@
 }
 
 /*-----------------------------------------------
+|   Sync Confirm Screen
+\------------------------------------------------*/
+#syncConfirmText {
+	top: 31%;
+	font-size: 20pt;
+}
+
+/*-----------------------------------------------
 |   Sync Screen
 \------------------------------------------------*/
+#syncScreen img {
+	top: 43%;
+}
+
+#rightArrow {
+	height: 45pt;
+}
+
+#smartphoneIcon {
+	left: 28%;
+	height: 75pt;
+}
+
+#iraveIcon {
+	left: 72%;
+	height: 75pt;
+}
+
 #syncText {
+	top: 70%;
 	width: 60%;
 	font-size: 18pt;
-	text-align: left;
 }
 
 /*-----------------------------------------------
 |   Connection progress screen
 \------------------------------------------------*/
-#connectingText {
+#progressText {
 	top: 40%;
 	width: 70%;
-	font-size: 18pt;
+	font-size: 20pt;
 }
 
 #progressBar {
