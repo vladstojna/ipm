@@ -393,7 +393,7 @@ function goToCandidateList(cand, size, title) {
 	document.getElementById("titleIcon").style.width = size;
 	document.getElementById("placeTitle").innerHTML = title;
 	document.getElementById("listDistance").innerHTML = "Distance: " + distance + " m";
-	document.getElementById("listOccupancy").innerHTML = "Occupancy: " + Math.round(Math.random()*100) + " %";
+	document.getElementById("listOccupancy").innerHTML = "Occupancy: " + Math.round(Math.random()*100) + "%";
 	swap(currentScreen, findPlacesList);
 	hide(menuClock);
 }
